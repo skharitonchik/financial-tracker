@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, ChangeEvent } from 'react';
+import { FC, useEffect, useState, ChangeEvent, useRef } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import Grid from '@mui/material/Grid';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -55,13 +55,13 @@ export const Transactions: FC<TransactionsProps> = () => {
   const [transactionCard, setTransactionCard] = useState('');
   const [transactionCategory, setTransactionCategory] = useState('');
   const [transactionDate, setTransactionDate] = useState<Dayjs | null>(dayjs(new Date()));
-  const [transactionMoney, setTransactionMoney] = useState(0);
+  const transactionMoney = useRef(0);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [categoryType, setCategoryType] = useState(0);
-  const [transactionNotes, setTransactionNotes] = useState('');
+  const transactionNotes = useRef('');
 
-  const [moneyFrom, setMoneyFrom] = useState(0);
-  const [moneyTo, setMoneyTo] = useState(0);
+  const moneyFrom = useRef(0);
+  const moneyTo = useRef(0);
 
   const { transactionTransferPostData, transactionTransferMutate, isLoadTransactionTransferPostSuccess } =
     useTransactionTransferAdd();
@@ -86,17 +86,17 @@ export const Transactions: FC<TransactionsProps> = () => {
             date: transactionDate,
             card: cardFrom,
             category: 'transfer',
-            money: moneyFrom,
+            money: moneyFrom.current,
             type: 20,
-            notes: transactionNotes,
+            notes: transactionNotes.current,
           },
           to: {
             date: transactionDate,
             card: cardTo,
             category: 'transfer',
-            money: moneyTo,
+            money: moneyTo.current,
             type: 21,
-            notes: transactionNotes,
+            notes: transactionNotes.current,
           },
         },
       });
@@ -106,9 +106,9 @@ export const Transactions: FC<TransactionsProps> = () => {
           date: transactionDate,
           card: transactionCard,
           category: transactionCategory,
-          money: transactionMoney,
+          money: transactionMoney.current,
           type: categoryType,
-          notes: transactionNotes,
+          notes: transactionNotes.current,
         },
       });
     }
@@ -138,12 +138,15 @@ export const Transactions: FC<TransactionsProps> = () => {
 
   useEffect(() => {
     setIsLoadTransactions(true);
+    transactionMoney.current = 0;
+    moneyFrom.current = 0;
+    moneyTo.current = 0;
+    transactionNotes.current = '';
   }, [transactionsPostData, transactionTransferPostData]);
 
   useEffect(() => {
     if (isLoadTransactionsSuccess) {
       setIsLoadTransactions(false);
-      console.info('%c  SERGEY transactionsData', 'background: #222; color: #bada55', transactionsData);
     }
   }, [transactionsData]);
 
@@ -171,11 +174,11 @@ export const Transactions: FC<TransactionsProps> = () => {
             <Grid item xs={8}>
               {categoryType !== 2 ? (
                 <TextField
-                  value={transactionMoney}
                   size="small"
+                  defaultValue={0}
                   fullWidth
                   type="number"
-                  onChange={(e) => setTransactionMoney(parseFloat(e.target.value))}
+                  onChange={(e) => (transactionMoney.current = parseFloat(e.target.value))}
                   label="Money spend"
                   variant="outlined"
                 />
@@ -186,21 +189,21 @@ export const Transactions: FC<TransactionsProps> = () => {
               {categoryType === 2 ? (
                 <>
                   <TextField
-                    value={moneyFrom}
+                    defaultValue={0}
                     size="small"
                     fullWidth
                     type="number"
-                    onChange={(e) => setMoneyFrom(parseFloat(e.target.value))}
+                    onChange={(e) => (moneyFrom.current = parseFloat(e.target.value))}
                     label="Money from:"
                     variant="outlined"
                   />
                   <TextField
                     sx={{ mt: 2 }}
-                    value={moneyTo}
+                    defaultValue={0}
                     size="small"
                     fullWidth
                     type="number"
-                    onChange={(e) => setMoneyTo(parseFloat(e.target.value))}
+                    onChange={(e) => (moneyTo.current = parseFloat(e.target.value))}
                     label="Money to:"
                     variant="outlined"
                   />
@@ -284,13 +287,13 @@ export const Transactions: FC<TransactionsProps> = () => {
               </Box>
               <TextField
                 sx={{ mt: 2 }}
-                value={transactionNotes}
+                defaultValue={''}
                 multiline
                 rows={4}
                 size="small"
                 fullWidth
                 type="text"
-                onChange={(e) => setTransactionNotes(e.target.value)}
+                onChange={(e) => (transactionNotes.current = e.target.value)}
                 label="Notes:"
                 variant="outlined"
               />
