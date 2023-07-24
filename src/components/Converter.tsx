@@ -1,8 +1,7 @@
-import { FC, ReactNode, useState, useEffect } from 'react'
-import { TextField } from '@mui/material';
+import { FC, useState, useEffect } from 'react'
+import { TextField, Typography } from '@mui/material';
 
 type ConverterProps = {
-  children?: ReactNode;
   amount: number,
   firstCurrency: string,
   secondCurrency: string
@@ -10,7 +9,9 @@ type ConverterProps = {
 
 export const Converter: FC<ConverterProps> = ({amount, firstCurrency, secondCurrency}) => {
   const [exchangeRate, setExchangeRate] = useState(1)
+  const [result, setResult] = useState(0)
   useEffect(() => {setExchangeRate(changeExchangeRate())})
+  useEffect(() => {setResult(convert())})
 
   const changeExchangeRate = () => {
     switch(firstCurrency) {
@@ -46,25 +47,11 @@ export const Converter: FC<ConverterProps> = ({amount, firstCurrency, secondCurr
     }
   }
 
-  const isError = () => {
-    if(!amount) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  const isHelper = () => {
-    if(isError()) {
-      return 'Check your amount'
-    }
-  }
-
   const convert = () => {
     if(amount) {
-      return amount * exchangeRate;
+      return +(amount * exchangeRate).toFixed(2);
     } else {
-      return ' '
+      return 0
     }
   }
 
@@ -75,13 +62,9 @@ export const Converter: FC<ConverterProps> = ({amount, firstCurrency, secondCurr
         label='Exchange rate'
         value={exchangeRate}>
       </TextField>
-      <TextField
-        label={secondCurrency}
-        error={isError()}
-        helperText={isHelper()}
-        value={convert()}
-        defaultValue={' '}>
-      </TextField>
+      <Typography>
+        ~ {result} {secondCurrency}
+      </Typography>
     </>
   )
 }
