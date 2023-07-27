@@ -74,20 +74,22 @@ export const Dashboard: FC<DashboardProps> = () => {
           </Select>
         </Box>
 
-        <TextField
-          sx={{mr: 1}}
-          placeholder='Input you amount'
-          label= {firstCurrency}
-          onChange={(e) => {setAmount(parseFloat(e.target.value))}}
-          type='number'
-          value={amount}>
-        </TextField>
-        
-        <Converter
-          amount={amount}
-          firstCurrency={firstCurrency}
-          secondCurrency={secondCurrency}
+        <Box>
+          <TextField
+            sx={{mr: 1}}
+            placeholder='Input you amount'
+            label= {firstCurrency}
+            onChange={(e) => {setAmount(parseFloat(e.target.value))}}
+            type='number'
+            value={amount}>
+          </TextField>
+          
+          <Converter
+            amount={amount}
+            firstCurrency={firstCurrency}
+            secondCurrency={secondCurrency}
           />
+        </Box>
       </Box>
     </>
   );
