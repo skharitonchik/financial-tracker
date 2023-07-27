@@ -12,6 +12,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 import { useCategoryEdit } from '../hooks';
+import { SubCategoryForm } from './SubCategoryForm';
 
 type CategoryListItemProps = {
   category: {
@@ -86,6 +87,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
                   }}
                 />
               </Box>
+              <SubCategoryForm category={'test'}></SubCategoryForm>
             </Box>
           </Box>
         </ListItem>
