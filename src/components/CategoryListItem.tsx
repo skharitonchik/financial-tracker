@@ -87,7 +87,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
                   }}
                 />
               </Box>
-              <SubCategoryForm category={'test'}></SubCategoryForm>
+              <SubCategoryForm></SubCategoryForm>
             </Box>
           </Box>
         </ListItem>

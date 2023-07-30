@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react'
 import { Button, TextField, List, ListItem, Typography } from '@mui/material';
 import { CategoryListItem } from './CategoryListItem';
 
-export const SubCategoryForm = ({category}) => {
+export const SubCategoryForm = () => {
   const [subCategory, setSubCategory] = useState('')
   const [subCategoryList, setSubCategoryList] = useState(new Array())
 
