@@ -77,6 +77,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
             />
           </Box>
         </Box>
+
         <Box sx={{ mt: 2 }}>
           {CATEGORY_TYPES.map((c: any, i: number) => (
             <RadioGroup
