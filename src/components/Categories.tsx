@@ -25,7 +25,7 @@ export const Categories: FC<CategoriesProps> = () => {
       <List>
         {isLoadCategoriesSuccess
           ? categoriesData.map((c: any) => (
-              <CategoryListItem onCategoryUpdate={updateCategoriesList} key={c.id} category={c}/>
+              <CategoryListItem onCategoryUpdate={updateCategoriesList} key={c.id} category={c} />
             ))
           : ''}
       </List>

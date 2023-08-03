@@ -66,7 +66,6 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
             label="New category name"
             variant="outlined"
           />
-          
           <Box sx={{ ml: 3, mt: 1 }}>
             <input
               type="color"
@@ -78,7 +77,6 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
             />
           </Box>
         </Box>
-        
         <Box sx={{ mt: 2 }}>
           {CATEGORY_TYPES.map((c: any, i: number) => (
             <RadioGroup
