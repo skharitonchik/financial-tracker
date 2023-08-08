@@ -21,6 +21,7 @@ export const FiltersCard: FC<FiltersCardProps> = ({ onDateFromUpdate, onDateToUp
   const { filtersData } = useFilterData(true);
   const [activeParentFilterId, setActiveParentIdFilter] = useState<string>();
   const [activeParentFilter, setActiveParentFilter] = useState<{
+    name: string;
     childFilters: any[];
   }>();
   const [activeChildFilter, setActiveChildFilter] = useState();
@@ -57,7 +58,10 @@ export const FiltersCard: FC<FiltersCardProps> = ({ onDateFromUpdate, onDateToUp
   return (
     <Accordion sx={{ mb: 2 }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-        <Typography>Saved filters</Typography>
+        <Typography> Saved filters: &nbsp;</Typography>
+        <Typography sx={{ fontStyle: 'italic' }}>
+          {activeParentFilter?.name}/{dayjs(dateFrom).format('D MMM')} - {dayjs(dateTo).format('D MMM')}
+        </Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Box>
