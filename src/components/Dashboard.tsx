@@ -37,7 +37,8 @@ export const Dashboard: FC<DashboardProps> = () => {
   const [isLoadDashboardData, setIsLoadDashboardData] = useState(true);
   const [dateFrom, setDateFrom] = useState<Dayjs | null>(dayjs(''));
   const [dateTo, setDateTo] = useState<Dayjs | null>(dayjs(''));
-  const [filterCurrency, setFilterCurrency] = useState('');
+  const [filterCurrencyId, setFilterCurrencyId] = useState('');
+  const [filterCurrencyName, setFilterCurrencyName] = useState('');
   const [income, setIncome] = useState(0);
   const [outcome, setOutcome] = useState(0);
   const [doughnutData, setDoughnutData] = useState(DEFAULT_PIE_DATA);
@@ -62,7 +63,7 @@ export const Dashboard: FC<DashboardProps> = () => {
           return;
         }
 
-        if (transactionCurrency && transactionCurrency.id !== filterCurrency) {
+        if (transactionCurrency && transactionCurrency.id !== filterCurrencyId) {
           return;
         }
 
@@ -109,7 +110,7 @@ export const Dashboard: FC<DashboardProps> = () => {
       borderColor.push(color);
     }
 
-    const activeCurrency = currenciesData.find((c) => c.id === filterCurrency);
+    const activeCurrency = currenciesData.find((c) => c.id === filterCurrencyId);
 
     return {
       labels,
@@ -150,7 +151,8 @@ export const Dashboard: FC<DashboardProps> = () => {
 
   useEffect(() => {
     if (currenciesData) {
-      setFilterCurrency(currenciesData[0].id);
+      setFilterCurrencyId(currenciesData[0].id);
+      setFilterCurrencyName(currenciesData[0].name);
     }
   }, [currenciesData]);
 
@@ -163,7 +165,7 @@ export const Dashboard: FC<DashboardProps> = () => {
 
       setDoughnutData(preparePieData(chartData));
     }
-  }, [isLoadDashboardData, filterCurrency, dateTo, dateFrom]);
+  }, [isLoadDashboardData, filterCurrencyId, dateTo, dateFrom]);
 
   if (isLoadDashboardData) {
     return <></>;
@@ -174,7 +176,8 @@ export const Dashboard: FC<DashboardProps> = () => {
       <FiltersCard onDateFromUpdate={(value) => setDateFrom(value)} onDateToUpdate={(value) => setDateTo(value)} />
       <Accordion sx={{ mb: 2 }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-          <Typography>Active Currency</Typography>
+          <Typography>Active Currency: &nbsp;</Typography>
+          <Typography sx={{ fontStyle: 'italic' }}> {filterCurrencyName}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           {isLoadCurrenciesSuccess
@@ -183,8 +186,11 @@ export const Dashboard: FC<DashboardProps> = () => {
                   key={c.id}
                   inline={true}
                   value={c.id}
-                  activeItem={filterCurrency}
-                  activeItemChange={setFilterCurrency}
+                  activeItem={filterCurrencyId}
+                  activeItemChange={(value) => {
+                    setFilterCurrencyId(value);
+                    setFilterCurrencyName(c.name);
+                  }}
                   label={c.name}
                 />
               ))
@@ -197,14 +203,14 @@ export const Dashboard: FC<DashboardProps> = () => {
           <Card sx={{ mt: 2 }}>
             <CardContent>
               <Typography sx={{ color: '#008c7e', display: 'inline-flex' }}>
-                Total income: {income.toFixed(2)} {currenciesData.find((c) => c.id === filterCurrency).name}
+                Total income: {income.toFixed(2)} {currenciesData.find((c) => c.id === filterCurrencyId).name}
               </Typography>
             </CardContent>
           </Card>
           <Card sx={{ mt: 2 }}>
             <CardContent>
               <Typography sx={{ color: '#FF4842', display: 'inline-flex' }}>
-                Total outcome: {outcome.toFixed(2)} {currenciesData.find((c) => c.id === filterCurrency).name}
+                Total outcome: {outcome.toFixed(2)} {currenciesData.find((c) => c.id === filterCurrencyId).name}
               </Typography>
             </CardContent>
           </Card>
