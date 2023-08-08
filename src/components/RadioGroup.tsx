@@ -1,14 +1,15 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Radio from '@mui/material/Radio';
 import Typography from '@mui/material/Typography';
+import { SxProps } from '@mui/system/styleFunctionSx';
 
 type RadioGroupProps = {
   value: any;
   activeItem: any;
   activeItemChange: (activeItem: any) => void;
   isDisabled?: boolean;
-  label?: string;
+  label?: string | ReactNode;
   secondLabel?: string;
   inline?: boolean;
 };

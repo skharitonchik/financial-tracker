@@ -4,36 +4,28 @@ import { Doughnut } from 'react-chartjs-2';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import dayjs, { Dayjs } from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
+
 import { useTransactionsData, useCategoriesData, useCardsData, useCurrenciesData, useUsersData } from '../hooks';
 import { RadioGroup } from './RadioGroup';
+import { FiltersCard } from './dashboard';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const DEFAULT_PIE_DATA = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  labels: ['Red'],
   datasets: [
     {
       label: '# of Votes',
       data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgb(213,10,50)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor: [
-        'rgb(213,10,50)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
+      backgroundColor: ['rgb(213,10,50)'],
+      borderColor: ['rgb(213,10,50)'],
       borderWidth: 1,
     },
   ],
@@ -64,7 +56,6 @@ export const Dashboard: FC<DashboardProps> = () => {
       (t: { id: string; date: string; card: string; category: string; money: number; type: number; notes: string }) => {
         const { category, money, type, card, date } = t;
         const transactionCurrency = getTransactionCurrency(card);
-
         const transactionDate = dayjs(date).format('YYYY-MM-DD');
 
         if (dayjs(transactionDate).isBefore(dayjs(dateFrom)) || dayjs(transactionDate).isAfter(dayjs(dateTo))) {
@@ -180,45 +171,64 @@ export const Dashboard: FC<DashboardProps> = () => {
 
   return (
     <>
-      {isLoadCurrenciesSuccess
-        ? currenciesData.map((c: any) => (
-            <RadioGroup
-              key={c.id}
-              inline={true}
-              value={c.id}
-              activeItem={filterCurrency}
-              activeItemChange={setFilterCurrency}
-              label={c.name}
-            />
-          ))
-        : ''}
-      <Box sx={{ mt: 2 }}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker label="Date from" value={dateFrom} onChange={(newValue: any) => setDateFrom(newValue)} />
-          <DatePicker sx={{ ml: 2 }} label="Date to" value={dateTo} onChange={(newValue: any) => setDateTo(newValue)} />
-        </LocalizationProvider>
-      </Box>
-      <Box sx={{ mt: 2 }}>
-        <Typography sx={{ color: '#008c7e', display: 'inline-flex' }}>
-          Total income: {income.toFixed(2)} {currenciesData.find((c) => c.id === filterCurrency).name}
-        </Typography>
-        <Typography sx={{ ml: 2, color: '#FF4842', display: 'inline-flex' }}>
-          Total outcome: {outcome.toFixed(2)} {currenciesData.find((c) => c.id === filterCurrency).name}
-        </Typography>
-      </Box>
-      <Box sx={{ width: 700, height: 700 }}>
-        <Doughnut
-          data={doughnutData}
-          options={{
-            plugins: {
-              legend: {
-                position: 'right',
-                display: true,
-              },
-            },
-          }}
-        />
-      </Box>
+      <FiltersCard onDateFromUpdate={(value) => setDateFrom(value)} onDateToUpdate={(value) => setDateTo(value)} />
+      <Accordion sx={{ mb: 2 }}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+          <Typography>Active Currency</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {isLoadCurrenciesSuccess
+            ? currenciesData.map((c: any) => (
+                <RadioGroup
+                  key={c.id}
+                  inline={true}
+                  value={c.id}
+                  activeItem={filterCurrency}
+                  activeItemChange={setFilterCurrency}
+                  label={c.name}
+                />
+              ))
+            : ''}
+        </AccordionDetails>
+      </Accordion>
+
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <Card sx={{ mt: 2 }}>
+            <CardContent>
+              <Typography sx={{ color: '#008c7e', display: 'inline-flex' }}>
+                Total income: {income.toFixed(2)} {currenciesData.find((c) => c.id === filterCurrency).name}
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card sx={{ mt: 2 }}>
+            <CardContent>
+              <Typography sx={{ color: '#FF4842', display: 'inline-flex' }}>
+                Total outcome: {outcome.toFixed(2)} {currenciesData.find((c) => c.id === filterCurrency).name}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={8}>
+          <Card sx={{ width: '100%', height: 700, mt: 2 }}>
+            <CardContent sx={{ ml: 5 }}>
+              <Doughnut
+                data={doughnutData}
+                options={{
+                  plugins: {
+                    legend: {
+                      position: 'bottom',
+                      display: true,
+                    },
+                  },
+                }}
+              />
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={4}></Grid>
+        <Grid item xs={8}></Grid>
+      </Grid>
     </>
   );
 };
