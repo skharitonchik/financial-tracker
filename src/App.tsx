@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
-import { Currencies, Users, Categories, Cards, Transactions, Dashboard } from './components';
+import { Currencies, Users, Categories, Cards, Transactions, Dashboard, Filters } from './components';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -56,6 +56,7 @@ export default function App() {
               <Tab label="Categories" {...a11yProps(2)} />
               <Tab label="Users" {...a11yProps(3)} />
               <Tab label="Currencies" {...a11yProps(4)} />
+              <Tab label="Saved Filters" {...a11yProps(5)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -75,6 +76,9 @@ export default function App() {
           </TabPanel>
           <TabPanel value={value} index={5}>
             <Currencies />
+          </TabPanel>
+          <TabPanel value={value} index={6}>
+            <Filters />
           </TabPanel>
         </Box>
       </Container>

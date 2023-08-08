@@ -4,3 +4,4 @@ export * from './Cards';
 export * from './Categories';
 export * from './Transactions';
 export * from './Dashboard';
+export * from './Filters';

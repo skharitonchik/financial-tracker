@@ -1,15 +1,12 @@
 import { FC, useEffect, useState, ChangeEvent, useRef } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import Grid from '@mui/material/Grid';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from '@mui/material/Box';
 import Accordion from '@mui/material/Accordion';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
-import Radio from '@mui/material/Radio';
 import TextField from '@mui/material/TextField';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import Button from '@mui/material/Button';
@@ -299,9 +296,7 @@ export const Transactions: FC<TransactionsProps> = () => {
               />
             </Grid>
             <Grid item xs={4}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateCalendar value={transactionDate} onChange={(newValue) => setTransactionDate(newValue)} />
-              </LocalizationProvider>
+              <DateCalendar value={transactionDate} onChange={(newValue) => setTransactionDate(newValue)} />
             </Grid>
             <Grid item xs={4}></Grid>
             <Grid item xs={8}></Grid>
