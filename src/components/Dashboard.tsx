@@ -14,7 +14,7 @@ import Grid from '@mui/material/Grid';
 
 import { useTransactionsData, useCategoriesData, useCardsData, useCurrenciesData, useUsersData } from '../hooks';
 import { RadioGroup } from './RadioGroup';
-import { FiltersCard } from './dashboard';
+import { FiltersCard } from './dashboard/components';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
