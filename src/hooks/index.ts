@@ -11,3 +11,6 @@ export * from './useCategoryAdd';
 export * from './useCategoryDelete';
 export * from './useCategoryEdit';
 export * from './useTransactionsData';
+export * from './useFiltersData';
+export * from './useFilterAdd';
+export * from './useFilterUpdate';
