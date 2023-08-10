@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 
 import { RadioGroup } from './RadioGroup';
 import { useCategoryAdd } from '../hooks';
+import { CommentsForm } from './commentsForm';
 
 const CATEGORY_TYPES = [
   {
@@ -35,19 +36,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
   const [categoryType, setCategoryType] = useState(0);
   const categoryColor = useRef<HTMLInputElement>(null);
   const { categoryAddMutate, categoriesPostData } = useCategoryAdd();
-  //for comments
-  const input = <TextField
-    sx={{mt:2}}
-    size='small'
-    fullWidth
-    type='text'
-    onChange={(e) => {setComment(e.target.value)}}
-    label="Input your comment"
-    variant="outlined"
-  />
-  const [inputsList, addInput] = useState(new Array(input)) //почему не работает [] вместо new Array (not iterable)
-  const [comment, setComment] = useState('');
-  const [commentsList, addComment] = useState(new Array); //почему не работает [] вместо new Array (not iterable)
+  const commentsList = [];
 
   const addCategory = () => {
     const color = categoryColor.current ? categoryColor.current.value : '';
@@ -104,27 +93,10 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
             />
           ))}
         </Box>
-        
-        <Box>
-          {inputsList}
-          <Button
-            sx={{mt: 2, height: 40}}
-            size='small'
-            variant='outlined'
-            onClick={() => {
-              addInput([...inputsList, input]);
-              addComment([...commentsList, comment])}
-            }
-          >One more comment
-          </Button>
-          <Button
-            sx={{ml: 1, mt: 2, height: 40}}
-            size='small'
-            variant='outlined'
-            onClick={() => addComment([...commentsList, comment])}
-          >Save comments
-          </Button>
-        </Box>
+
+        <CommentsForm
+          commentsList = {commentsList}
+        />
 
         <Button sx={{ mt: 2 }} variant="outlined" onClick={addCategory}>
           Add category

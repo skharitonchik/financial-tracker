@@ -12,6 +12,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 import { useCategoryEdit } from '../hooks';
+import { CommentsForm } from './commentsForm';
 
 type CategoryListItemProps = {
   category: {
@@ -19,6 +20,7 @@ type CategoryListItemProps = {
     type: number;
     name: string;
     color: string;
+    comments: [],
   };
   onCategoryUpdate: () => void;
 };
@@ -28,6 +30,8 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
   const [updatedName, setUpdatedName] = useState(category.name);
   const categoryColor = useRef<HTMLInputElement>(null);
   const { categoryEditMutate, categoriesEditData } = useCategoryEdit();
+  const commentsList = category.comments;
+
   const parseCategoryType = (typeId) => {
     switch (typeId) {
       case 0:
@@ -45,6 +49,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
         ...category,
         name: updatedName,
         color: categoryColor?.current?.value,
+        comments: commentsList,
       },
     });
     setIsEditMode(false);
@@ -66,7 +71,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
             </IconButton>
           }>
           <Box sx={{ m: 2, ml: 4 }}>
-            <Box sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flexbox' }}>
               <TextField
                 defaultValue={category.name}
                 onChange={({ target }) => setUpdatedName(target.value)}
@@ -86,6 +91,9 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
                   }}
                 />
               </Box>
+              <CommentsForm
+                commentsList = {commentsList}
+              />
             </Box>
           </Box>
         </ListItem>
