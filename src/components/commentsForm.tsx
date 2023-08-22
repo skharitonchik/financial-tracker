@@ -1,12 +1,12 @@
 import { FC, useState } from 'react'
-import { Button, TextField, List, ListItem, Typography, Box } from '@mui/material';
+import { Button, TextField, Box } from '@mui/material';
 
 type CommentsFormProps = {
-  commentsList: any[]
+  addComment: (comment: string) => void,
 };
 
 export const CommentsForm: FC<CommentsFormProps> = ({
-  commentsList
+  addComment,
 }) => {
   const input = <TextField
     sx={{mt:2}}
@@ -20,9 +20,6 @@ export const CommentsForm: FC<CommentsFormProps> = ({
 
   const [inputsList, addInput] = useState(new Array(input)) //почему не работает [] вместо new Array (not iterable)
   const [comment, setComment] = useState('');
-  const addComment = (comment) => {
-    commentsList.push(comment)
-  }
 
   return (
     <>
@@ -43,7 +40,7 @@ export const CommentsForm: FC<CommentsFormProps> = ({
           sx={{ml: 1, mt: 2, height: 40}}
           size='small'
           variant='outlined'
-          onClick={() => addComment(comment)}
+          onClick={() => {addComment(comment)}}
         >Save comments
         </Button>
       </Box>

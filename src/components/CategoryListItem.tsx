@@ -13,6 +13,7 @@ import TextField from '@mui/material/TextField';
 
 import { useCategoryEdit } from '../hooks';
 import { CommentsForm } from './commentsForm';
+import { CommentsList } from './CommentsList';
 
 type CategoryListItemProps = {
   category: {
@@ -20,7 +21,7 @@ type CategoryListItemProps = {
     type: number;
     name: string;
     color: string;
-    comments: [],
+    comments: any[],
   };
   onCategoryUpdate: () => void;
 };
@@ -30,7 +31,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
   const [updatedName, setUpdatedName] = useState(category.name);
   const categoryColor = useRef<HTMLInputElement>(null);
   const { categoryEditMutate, categoriesEditData } = useCategoryEdit();
-  const commentsList = category.comments;
+  const [commentsList, setCommentsList] = useState(category.comments);
 
   const parseCategoryType = (typeId) => {
     switch (typeId) {
@@ -55,6 +56,10 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
     setIsEditMode(false);
   };
 
+  /* const removeComment = (comment) => {
+    setCommentsList(commentsList.filter(c => c !== comment))
+  } */
+
   useEffect(() => {
     console.info('%c  SERGEY categoriesEditData', 'background: #222; color: #bada55', categoriesEditData);
     onCategoryUpdate();
@@ -71,7 +76,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
             </IconButton>
           }>
           <Box sx={{ m: 2, ml: 4 }}>
-            <Box sx={{ display: 'flexbox' }}>
+            <Box sx={{ display: 'flex' }}>
               <TextField
                 defaultValue={category.name}
                 onChange={({ target }) => setUpdatedName(target.value)}
@@ -91,10 +96,15 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
                   }}
                 />
               </Box>
-              <CommentsForm
-                commentsList = {commentsList}
-              />
             </Box>
+            <CommentsList
+                category = {category.name}
+                list = {commentsList}
+                removeComment = {() => {}}
+              />
+            <CommentsForm
+              addComment={(c) => setCommentsList([...commentsList, c])}
+            />
           </Box>
         </ListItem>
       </>

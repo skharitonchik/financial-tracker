@@ -36,7 +36,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
   const [categoryType, setCategoryType] = useState(0);
   const categoryColor = useRef<HTMLInputElement>(null);
   const { categoryAddMutate, categoriesPostData } = useCategoryAdd();
-  const commentsList = [];
+  const [commentsList, setCommentsList] = useState(new Array);
 
   const addCategory = () => {
     const color = categoryColor.current ? categoryColor.current.value : '';
@@ -94,13 +94,14 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
           ))}
         </Box>
 
-        <CommentsForm
-          commentsList = {commentsList}
-        />
-
         <Button sx={{ mt: 2 }} variant="outlined" onClick={addCategory}>
           Add category
         </Button>
+
+        
+        <CommentsForm
+          addComment={(c) => setCommentsList([...commentsList, c])}
+        />
       </AccordionDetails>
     </Accordion>
   );
