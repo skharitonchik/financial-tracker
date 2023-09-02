@@ -23,6 +23,7 @@ import {
 
 import { RadioGroup } from './RadioGroup';
 import { TransactionTable } from './TransactionTable';
+import { CommentsList } from './CommentsList';
 
 const CATEGORY_TYPES = [
   {
@@ -56,6 +57,8 @@ export const Transactions: FC<TransactionsProps> = () => {
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [categoryType, setCategoryType] = useState(0);
   const transactionNotes = useRef('');
+  const [activeCategory, setActiveCategory] = useState([]);
+  const [notesValue, setNotesValue] = useState('');
 
   const moneyFrom = useRef(0);
   const moneyTo = useRef(0);
@@ -127,6 +130,14 @@ export const Transactions: FC<TransactionsProps> = () => {
     }
   };
 
+  const addCommentToNotes = (comment: string) => {
+    notesValue.length > 1
+    ? notesValue[notesValue.length-1] !== ' '
+      ? setNotesValue(notesValue.concat(` ${comment}`))
+      : setNotesValue(notesValue.concat(`${comment}`))
+    : setNotesValue(notesValue.concat(`${comment}`))
+  };
+
   useEffect(() => {
     if (categoriesData && categoriesData.length > 0) {
       setFilteredCategories(categoriesData.filter((c) => c.type === categoryType));
@@ -146,6 +157,12 @@ export const Transactions: FC<TransactionsProps> = () => {
       setIsLoadTransactions(false);
     }
   }, [transactionsData]);
+
+  useEffect(() => {
+    if(categoriesData && categoriesData.length > 0) {
+      setActiveCategory(categoriesData.filter((c:any) => c.id === transactionCategory))
+    }
+  }, [transactionCategory]);
 
   return (
     <>
@@ -268,6 +285,18 @@ export const Transactions: FC<TransactionsProps> = () => {
               </Box>
               <Divider />
               <Box sx={{ mt: 2 }}>
+                {activeCategory
+                  ? activeCategory.map((c:any) => (
+                      <CommentsList
+                        category={c.name}
+                        list={c.comments}
+                        actionLabel='Add'
+                        actionHandler={(c) => addCommentToNotes(c)}
+                      />
+                    ))
+                  : null }
+              </Box>
+              <Box sx={{ mt: 2 }}>
                 {isLoadCardsSuccess && categoryType !== 2
                   ? cardsData.map((c: any) => (
                       <RadioGroup
@@ -285,12 +314,13 @@ export const Transactions: FC<TransactionsProps> = () => {
               <TextField
                 sx={{ mt: 2 }}
                 defaultValue={''}
+                value={notesValue}
                 multiline
                 rows={4}
                 size="small"
                 fullWidth
                 type="text"
-                onChange={(e) => (transactionNotes.current = e.target.value)}
+                onChange={(e) => {transactionNotes.current = e.target.value; setNotesValue(e.target.value)}}
                 label="Notes:"
                 variant="outlined"
               />

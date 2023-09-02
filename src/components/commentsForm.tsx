@@ -18,7 +18,7 @@ export const CommentsForm: FC<CommentsFormProps> = ({
     variant="outlined"
   />
 
-  const [inputsList, addInput] = useState(new Array(input)) //почему не работает [] вместо new Array (not iterable)
+  const [inputsList, addInput] = useState([input]) //почему не работает [] вместо new Array (not iterable)
   const [comment, setComment] = useState('');
 
   return (

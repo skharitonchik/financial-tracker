@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 
 import { RadioGroup } from './RadioGroup';
 import { useCategoryAdd } from '../hooks';
-import { CommentsForm } from './commentsForm';
+import { CommentsForm } from './CommentsForm';
 
 const CATEGORY_TYPES = [
   {
@@ -98,7 +98,6 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
           Add category
         </Button>
 
-        
         <CommentsForm
           addComment={(c) => setCommentsList([...commentsList, c])}
         />

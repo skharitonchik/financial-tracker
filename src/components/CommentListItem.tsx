@@ -1,25 +1,32 @@
-import { FC, useState } from 'react'
-import { Checkbox, ListItem, ListItemText } from '@mui/material';
+import { FC } from 'react'
+import { Button, ListItem, ListItemText, Divider } from '@mui/material';
 
 type CommentsListItemProps = {
-  listElem: string,
-  checked: boolean,
-  onCheck: (e: boolean) => void,
+  label: string,
+  actionLabel: string,
+  actionHandler: () => void,
 }
 
 export const CommentListItem: FC<CommentsListItemProps> = ({
-  listElem,
-  checked,
-  onCheck,
+  label,
+  actionLabel,
+  actionHandler,
 }) => {
-  const [newState, setNewState] = useState(checked)
 
   return (
-    <ListItem
-      id={`comment-${listElem}`}
+    <>
+      <ListItem
+      disablePadding
     >
-      <Checkbox checked={newState} onChange={(e) => {onCheck(e.target.checked); setNewState(e.target.checked)}}/>
-      <ListItemText primary={listElem}/>
-    </ListItem>
+      <ListItemText primary={label}/>
+      <Button
+        size='small'
+        variant='outlined'
+        onClick={actionHandler}
+      >{actionLabel}</Button>
+      </ListItem>
+      <Divider/>
+    </>
+    
   )
 }

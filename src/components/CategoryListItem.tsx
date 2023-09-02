@@ -12,7 +12,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 import { useCategoryEdit } from '../hooks';
-import { CommentsForm } from './commentsForm';
+import { CommentsForm } from './CommentsForm';
 import { CommentsList } from './CommentsList';
 
 type CategoryListItemProps = {
@@ -56,9 +56,9 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
     setIsEditMode(false);
   };
 
-  /* const removeComment = (comment) => {
-    setCommentsList(commentsList.filter(c => c !== comment))
-  } */
+  const removeComment = (index) => {
+    setCommentsList(commentsList.filter((c) => c !== index))
+  }
 
   useEffect(() => {
     console.info('%c  SERGEY categoriesEditData', 'background: #222; color: #bada55', categoriesEditData);
@@ -98,10 +98,11 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
               </Box>
             </Box>
             <CommentsList
-                category = {category.name}
-                list = {commentsList}
-                removeComment = {() => {}}
-              />
+              category = {category.name}
+              list = {commentsList}
+              actionLabel='Remove'
+              actionHandler = {(c) => removeComment(c)}
+            />
             <CommentsForm
               addComment={(c) => setCommentsList([...commentsList, c])}
             />
