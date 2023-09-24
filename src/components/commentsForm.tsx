@@ -1,47 +1,54 @@
-import { FC, useState } from 'react'
-import { Button, TextField, Box } from '@mui/material';
+import { FC, useState, useRef, useEffect, forwardRef } from 'react'
+import { Button, Box } from '@mui/material';
+
+import { CommentsFormInput } from './CommentsFormInput';
 
 type CommentsFormProps = {
-  addComment: (comment: string) => void,
+  addComments: (comments: any[]) => void,
 };
 
-export const CommentsForm: FC<CommentsFormProps> = ({
-  addComment,
+export const CommentsForm = ({
+  addComments,
 }) => {
-  const input = <TextField
-    sx={{mt:2}}
-    size='small'
-    fullWidth
-    type='text'
-    onChange={(e) => {setComment(e.target.value)}}
-    label="Input your comment"
-    variant="outlined"
-  />
+  const [isList, setIsList] = useState(false)
+  const setId = () => {1
+    return (
+      (Math.round(Math.random() * 10000)).toString()
+    )
+  }
+  const input = 
+    <CommentsFormInput
+      id={setId()}
+      //removeItem={(id) => setInputsList(inputsList.filter((i) => i != id))}
+      removeItem={() => console.log(inputsList)}
+    />
 
-  const [inputsList, addInput] = useState([input]) //почему не работает [] вместо new Array (not iterable)
-  const [comment, setComment] = useState('');
+  const [inputsList, setInputsList] = useState<any>([input])
+
+  useEffect(() => console.log(inputsList), [inputsList])
+
+  if(!isList) {
+    return (
+      <Box>
+        <Button
+          sx={{mt: 2}}
+          variant='outlined'
+          onClick={() => setIsList(true)}
+        >Add comment</Button>
+      </Box>
+    )
+  }
 
   return (
     <>
       <Box>
         {inputsList}
+
         <Button
-          sx={{mt: 2, height: 40}}
-          size='small'
+          sx={{mt: 2}}
           variant='outlined'
-          onClick={() => {
-            addInput([...inputsList, input]);
-            addComment(comment)
-            }
-          }
+          onClick={() => setInputsList([...inputsList, input])}
         >One more comment
-        </Button>
-        <Button
-          sx={{ml: 1, mt: 2, height: 40}}
-          size='small'
-          variant='outlined'
-          onClick={() => {addComment(comment)}}
-        >Save comments
         </Button>
       </Box>
     </>

@@ -36,7 +36,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
   const [categoryType, setCategoryType] = useState(0);
   const categoryColor = useRef<HTMLInputElement>(null);
   const { categoryAddMutate, categoriesPostData } = useCategoryAdd();
-  const [commentsList, setCommentsList] = useState(new Array);
+  const [commentsList, setCommentsList] = useState<any>([]);
 
   const addCategory = () => {
     const color = categoryColor.current ? categoryColor.current.value : '';
@@ -52,7 +52,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
   };
 
   useEffect(() => onCategoryAdd(), [categoriesPostData]);
-
+  
   return (
     <Accordion sx={{ mb: 2 }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
@@ -94,13 +94,13 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
           ))}
         </Box>
 
+        <CommentsForm
+          addComments={(newList) => setCommentsList(newList)}
+        />
+
         <Button sx={{ mt: 2 }} variant="outlined" onClick={addCategory}>
           Add category
         </Button>
-
-        <CommentsForm
-          addComment={(c) => setCommentsList([...commentsList, c])}
-        />
       </AccordionDetails>
     </Accordion>
   );
