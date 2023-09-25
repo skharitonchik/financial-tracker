@@ -1,16 +1,24 @@
-import { FC, useState, useRef, forwardRef} from 'react'
-import { TextField, Box, IconButton, ListItem, Input } from '@mui/material';
+import { FC, useState, useEffect } from 'react'
+import { TextField, IconButton, ListItem } from '@mui/material';
 import Close from '@mui/icons-material/Close';
 
 type CommentsFormInputProps = {
   id: string,
-  removeItem: (id: string) => void,
+  removeInput: (id: string) => void,
+  defaultValue: string,
+  onChange: (value: string) => void,
 };
 
 
-export const CommentsFormInput: FC<CommentsFormInputProps> = forwardRef((props, ref) => {
-  const {id, removeItem} = props
-  const [value, setValue] = useState('')
+export const CommentsFormInput: FC<CommentsFormInputProps> = ({
+  id,
+  removeInput,
+  defaultValue,
+  onChange,
+}) => {
+  const [value, setValue] = useState(defaultValue)
+
+  useEffect(() => setValue(defaultValue), [defaultValue])
 
   return (
     <ListItem
@@ -24,15 +32,17 @@ export const CommentsFormInput: FC<CommentsFormInputProps> = forwardRef((props, 
         label="Input your comment"
         variant="outlined"
         value={value}
-        onChange={(e) => {setValue(e.target.value)}}
-        inputRef={ref}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onChange(e.target.value)
+        }}
       />
       <IconButton
-      edge={'end'}
-      onClick={() => removeItem(id)}
+        edge={'end'}
+        onClick={() => removeInput(id)}
       >
         <Close/>
       </IconButton>
     </ListItem>
   )
-})
+}

@@ -7,25 +7,39 @@ type CommentsFormProps = {
   addComments: (comments: any[]) => void,
 };
 
-export const CommentsForm = ({
+export const CommentsForm: FC<CommentsFormProps> = ({
   addComments,
 }) => {
   const [isList, setIsList] = useState(false)
-  const setId = () => {1
-    return (
-      (Math.round(Math.random() * 10000)).toString()
-    )
+
+  const setId = () => (Math.round(Math.random() * 10000)).toString() 
+  const id = setId()
+  const value = ''
+
+  const [list, setList] = useState<any>([{id, value}])
+
+  const addItem = () => {
+    setList([...list, {
+      id: setId(), 
+      value: value,
+    }])
   }
-  const input = 
-    <CommentsFormInput
-      id={setId()}
-      //removeItem={(id) => setInputsList(inputsList.filter((i) => i != id))}
-      removeItem={() => console.log(inputsList)}
-    />
 
-  const [inputsList, setInputsList] = useState<any>([input])
+  const removeInput = (id: string) => {
+    setList(list.filter((i:{id: string, value: string}) => i.id !== id))
+  }
 
-  useEffect(() => console.log(inputsList), [inputsList])
+  const saveValue = (id: string, value: string) => {
+    setList(list.map((i:{id: string, value: string}) => {
+      if(i.id === id) {
+        i.value = value
+      }
+
+      return i
+    }))
+  }
+
+  useEffect(() => addComments(list.map((i:{id: string, value: string}) => i.value)), [list])
 
   if(!isList) {
     return (
@@ -42,12 +56,23 @@ export const CommentsForm = ({
   return (
     <>
       <Box>
-        {inputsList}
+        {
+          list.map((i) => {
+            return (
+              <CommentsFormInput
+                id={i.id}
+                removeInput={(id) => removeInput(id)}
+                defaultValue={i.value}
+                onChange={(v) => {saveValue(i.id, v)}}
+              />
+            )
+          })
+        }
 
         <Button
           sx={{mt: 2}}
           variant='outlined'
-          onClick={() => setInputsList([...inputsList, input])}
+          onClick={addItem}
         >One more comment
         </Button>
       </Box>
