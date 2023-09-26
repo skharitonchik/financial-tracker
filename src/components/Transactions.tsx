@@ -288,9 +288,8 @@ export const Transactions: FC<TransactionsProps> = () => {
                 {activeCategory
                   ? activeCategory.map((c:any) => (
                       <CommentsList
-                        category={c.name}
+                        type={'buttons'}
                         list={c.comments}
-                        actionLabel='Add'
                         actionHandler={(c) => addCommentToNotes(c)}
                       />
                     ))

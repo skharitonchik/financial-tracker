@@ -1,22 +1,31 @@
-import { FC, useState, useRef, useEffect, forwardRef } from 'react'
+import { FC, useState, useEffect } from 'react'
 import { Button, Box } from '@mui/material';
 
 import { CommentsFormInput } from './CommentsFormInput';
 
 type CommentsFormProps = {
   addComments: (comments: any[]) => void,
+  initialList?: any[]
 };
 
 export const CommentsForm: FC<CommentsFormProps> = ({
   addComments,
+  initialList,
 }) => {
-  const [isList, setIsList] = useState(false)
+  const [isList, setIsList] = useState(initialList ? true : false)
 
   const setId = () => (Math.round(Math.random() * 10000)).toString() 
   const id = setId()
   const value = ''
 
-  const [list, setList] = useState<any>([{id, value}])
+  const [list, setList] = useState<any>(
+    initialList
+    ? initialList.map((i) => ({
+        id: setId(),
+        value: i
+      }))
+    : [{id, value}]
+  )
 
   const addItem = () => {
     setList([...list, {

@@ -56,10 +56,6 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
     setIsEditMode(false);
   };
 
-  const removeComment = (index) => {
-    setCommentsList(commentsList.filter((c) => c !== index))
-  }
-
   useEffect(() => {
     console.info('%c  SERGEY categoriesEditData', 'background: #222; color: #bada55', categoriesEditData);
     onCategoryUpdate();
@@ -97,14 +93,9 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
                 />
               </Box>
             </Box>
-            <CommentsList
-              category = {category.name}
-              list = {commentsList}
-              actionLabel='Remove'
-              actionHandler = {(c) => removeComment(c)}
-            />
             <CommentsForm
-              addComment={(c) => setCommentsList([...commentsList, c])}
+              addComments={(newList) => setCommentsList(newList)}
+              initialList={commentsList}
             />
           </Box>
         </ListItem>
@@ -128,11 +119,16 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
               <AcUnitIcon sx={{ color: category.color }} />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText
-            sx={{ color: category.type === 0 ? '#FF4842' : '' || category.type === 1 ? '#008c7e' : '' }}
-            primary={category.name}
-            secondary={parseCategoryType(category.type)}
-          />
+          <Box>
+            <ListItemText
+              sx={{ color: category.type === 0 ? '#FF4842' : '' || category.type === 1 ? '#008c7e' : '' }}
+              primary={category.name}
+              secondary={parseCategoryType(category.type)}
+            />
+            <CommentsList
+              list={commentsList}
+            />
+          </Box>
         </ListItemButton>
       </ListItem>
     </>

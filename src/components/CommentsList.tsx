@@ -1,42 +1,60 @@
 import { FC } from 'react'
-import { List, Box } from '@mui/material';
-
-import { CommentListItem } from './CommentListItem';
+import { List, ListItem, Stack, Button } from '@mui/material';
 
 type CommentsListProps = {
-  category: string,
+  type?: string,
   list: any[],
-  actionLabel: string,
-  actionHandler: (c: any) => void,
+  actionHandler?: (c: string) => void,
 }
 
 export const CommentsList: FC<CommentsListProps> = ({
-  category,
+  type,
   list,
-  actionLabel,
   actionHandler,
 }) => {
 
-  if(list.length > 0) {
+  const action = actionHandler ? actionHandler : () => {}
+
+  if(type === 'buttons') {
     return (
-      <Box sx={{mt: 2}}>
-        <List
-          id={`${category}-comments-list`}
-          disablePadding
-        >
-          {
-            list.map((i) => (
-              <CommentListItem
-                label={i}
-                actionLabel={actionLabel}
-                actionHandler={() => actionHandler(i)}
-              />
-            ))
-          }
-        </List>
-      </Box>
+      <List
+        component={Stack}
+        direction={'row'}
+        useFlexGap
+        flexWrap={'wrap'}
+        disablePadding
+      >
+        {
+          list.map((i) => (
+            <Button
+              variant="outlined"
+              onClick={() => action(i)}
+              size={'small'}
+            >
+              {i}
+            </Button>
+          ))
+        }
+      </List>
     )
-  } else {
-    return null
   }
+
+  return (
+    <List
+      component={Stack}
+      direction={'row'}
+      useFlexGap
+      disablePadding
+    >
+      {
+        list.map((i) => (
+          <ListItem
+          disablePadding
+          sx={{fontSize: 13, width: 80}}>
+            {i}
+          </ListItem>
+        ))
+      }
+    </List>
+  )
 }
