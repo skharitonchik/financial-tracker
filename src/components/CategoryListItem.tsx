@@ -121,7 +121,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
           </ListItemAvatar>
           <Box>
             <ListItemText
-              sx={{ color: category.type === 0 ? '#FF4842' : '' || category.type === 1 ? '#008c7e' : '' }}
+              sx={{ color: category.type === 0 ? '#FF4842' : '' || category.type === 1 ? '#008c7e' : '', margin: 0 }}
               primary={category.name}
               secondary={parseCategoryType(category.type)}
             />

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { List, ListItem, Stack, Button } from '@mui/material';
+import { List, ListItem, Stack, Button, ButtonGroup } from '@mui/material';
 
 type CommentsListProps = {
   type?: string,
@@ -15,11 +15,12 @@ export const CommentsList: FC<CommentsListProps> = ({
 
   const action = actionHandler ? actionHandler : () => {}
 
-  if(type === 'buttons') {
+  /* if(type === 'buttons') {
     return (
       <List
         component={Stack}
         direction={'row'}
+        spacing={'5px'}
         useFlexGap
         flexWrap={'wrap'}
         disablePadding
@@ -37,6 +38,27 @@ export const CommentsList: FC<CommentsListProps> = ({
         }
       </List>
     )
+  } */
+
+  if(type === 'buttons') {
+    return (
+      <ButtonGroup
+        variant='text'
+        aria-label="outlined button group"
+      >
+        {
+          list.map((i) => (
+            <Button
+              variant='outlined'
+              onClick={() => action(i)}
+              size='small'
+            >
+              {i}
+            </Button>
+          ))
+        }
+      </ButtonGroup>
+    )
   }
 
   return (
@@ -49,9 +71,10 @@ export const CommentsList: FC<CommentsListProps> = ({
       {
         list.map((i) => (
           <ListItem
-          disablePadding
-          sx={{fontSize: 13, width: 80}}>
-            {i}
+            sx={{color: 'grey', fontSize: 14, width: 'auto', mr: 1}}
+            disablePadding
+          >
+              {i}
           </ListItem>
         ))
       }

@@ -138,6 +138,8 @@ export const Transactions: FC<TransactionsProps> = () => {
     : setNotesValue(notesValue.concat(`${comment}`))
   };
 
+  useEffect(() => {transactionNotes.current = notesValue}, [notesValue])
+
   useEffect(() => {
     if (categoriesData && categoriesData.length > 0) {
       setFilteredCategories(categoriesData.filter((c) => c.type === categoryType));
@@ -160,7 +162,7 @@ export const Transactions: FC<TransactionsProps> = () => {
 
   useEffect(() => {
     if(categoriesData && categoriesData.length > 0) {
-      setActiveCategory(categoriesData.filter((c:any) => c.id === transactionCategory))
+      setActiveCategory(categoriesData.filter((c:any) => c.id == transactionCategory))
     }
   }, [transactionCategory]);
 
@@ -286,14 +288,16 @@ export const Transactions: FC<TransactionsProps> = () => {
               <Divider />
               <Box sx={{ mt: 2 }}>
                 {activeCategory
-                  ? activeCategory.map((c:any) => (
-                      <CommentsList
-                        type={'buttons'}
-                        list={c.comments}
-                        actionHandler={(c) => addCommentToNotes(c)}
-                      />
-                    ))
-                  : null }
+                  ? activeCategory.map((c:any) => {
+                    if(c.comments.length > 0) {
+                      return (
+                        <CommentsList
+                          type={'buttons'}
+                          list={c.comments}
+                          actionHandler={(c) => addCommentToNotes(c)}
+                        />
+                    )}})
+                  : ''}
               </Box>
               <Box sx={{ mt: 2 }}>
                 {isLoadCardsSuccess && categoryType !== 2
