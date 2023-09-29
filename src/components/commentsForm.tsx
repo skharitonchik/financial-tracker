@@ -13,10 +13,7 @@ export const CommentsForm: FC<CommentsFormProps> = ({
   initialList,
 }) => {
   const [isList, setIsList] = useState(initialList ? true : false)
-
-  const setId = () => (Math.round(Math.random() * 10000)).toString() 
-  const id = setId()
-  const value = ''
+  const setId = () => (Math.round(Math.random() * 100000)).toString()
 
   const [list, setList] = useState<any>(
     initialList
@@ -24,13 +21,13 @@ export const CommentsForm: FC<CommentsFormProps> = ({
         id: setId(),
         value: i
       }))
-    : [{id, value}]
+    : []
   )
 
   const addItem = () => {
     setList([...list, {
       id: setId(), 
-      value: value,
+      value: '',
     }])
   }
 
@@ -50,13 +47,13 @@ export const CommentsForm: FC<CommentsFormProps> = ({
 
   useEffect(() => addComments(list.map((i:{id: string, value: string}) => i.value)), [list])
 
-  if(!isList) {
+  if(!isList || list.length == 0) {
     return (
       <Box>
         <Button
           sx={{mt: 2}}
           variant='outlined'
-          onClick={() => setIsList(true)}
+          onClick={() => {setIsList(true); addItem()}}
         >Add comment</Button>
       </Box>
     )

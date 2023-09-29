@@ -287,19 +287,6 @@ export const Transactions: FC<TransactionsProps> = () => {
               </Box>
               <Divider />
               <Box sx={{ mt: 2 }}>
-                {activeCategory
-                  ? activeCategory.map((c:any) => {
-                    if(c.comments.length > 0) {
-                      return (
-                        <CommentsList
-                          type={'buttons'}
-                          list={c.comments}
-                          actionHandler={(c) => addCommentToNotes(c)}
-                        />
-                    )}})
-                  : ''}
-              </Box>
-              <Box sx={{ mt: 2 }}>
                 {isLoadCardsSuccess && categoryType !== 2
                   ? cardsData.map((c: any) => (
                       <RadioGroup
@@ -312,6 +299,20 @@ export const Transactions: FC<TransactionsProps> = () => {
                         secondLabel={`${c.money} ${getCardCurrency(c.currency)} ${getCardUser(c.user)}`}
                       />
                     ))
+                  : ''}
+              </Box>
+              <Divider />
+              <Box sx={{ mt: 2 }}>
+                {activeCategory
+                  ? activeCategory.map((c:any) => {
+                    if(c.comments.length > 0) {
+                      return (
+                        <CommentsList
+                          type={'buttons'}
+                          list={c.comments}
+                          actionHandler={(c) => addCommentToNotes(c)}
+                        />
+                    )}})
                   : ''}
               </Box>
               <TextField

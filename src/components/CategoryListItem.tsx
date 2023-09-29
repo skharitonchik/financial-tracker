@@ -95,7 +95,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
             </Box>
             <CommentsForm
               addComments={(newList) => setCommentsList(newList)}
-              initialList={commentsList}
+              initialList={commentsList.length > 0 ? commentsList : undefined}
             />
           </Box>
         </ListItem>

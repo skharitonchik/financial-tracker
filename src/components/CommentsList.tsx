@@ -15,31 +15,6 @@ export const CommentsList: FC<CommentsListProps> = ({
 
   const action = actionHandler ? actionHandler : () => {}
 
-  /* if(type === 'buttons') {
-    return (
-      <List
-        component={Stack}
-        direction={'row'}
-        spacing={'5px'}
-        useFlexGap
-        flexWrap={'wrap'}
-        disablePadding
-      >
-        {
-          list.map((i) => (
-            <Button
-              variant="outlined"
-              onClick={() => action(i)}
-              size={'small'}
-            >
-              {i}
-            </Button>
-          ))
-        }
-      </List>
-    )
-  } */
-
   if(type === 'buttons') {
     return (
       <ButtonGroup
@@ -74,7 +49,7 @@ export const CommentsList: FC<CommentsListProps> = ({
             sx={{color: 'grey', fontSize: 14, width: 'auto', mr: 1}}
             disablePadding
           >
-              {i}
+            {i}
           </ListItem>
         ))
       }
