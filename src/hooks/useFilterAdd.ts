@@ -7,7 +7,7 @@ export const useFilterAdd = () => {
     mutationFn: (mutateVars: { requestData: any }) => {
       const { requestData } = mutateVars;
 
-      return postService(requestData, '/add-filter-group');
+      return postService(requestData, 'add-filter');
     },
   });
 

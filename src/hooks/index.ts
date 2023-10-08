@@ -14,3 +14,4 @@ export * from './useTransactionsData';
 export * from './useFiltersData';
 export * from './useFilterAdd';
 export * from './useFilterUpdate';
+export * from './useTransactionsByDayData';

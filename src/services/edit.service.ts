@@ -1,6 +1,6 @@
 import { BASE_URL } from './env.constants';
 export async function editService(data: any, uri: string) {
-  const response = await fetch(`${BASE_URL}${uri}`, {
+  const response = await fetch(`${BASE_URL}/api/${uri}`, {
     method: 'PUT', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
