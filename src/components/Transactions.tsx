@@ -23,7 +23,7 @@ import {
 
 import { RadioGroup } from './RadioGroup';
 import { TransactionTable } from './TransactionTable';
-import { CommentsList } from './CommentsList';
+import { CommentsButtonsList } from './CommentsButtonsList';
 
 const CATEGORY_TYPES = [
   {
@@ -300,10 +300,9 @@ export const Transactions: FC<TransactionsProps> = () => {
                   ? filteredCategories.map((c:any) => {
                       if(c.id == transactionCategory) {
                         return (
-                          <CommentsList
-                            type={'buttons'}
+                          <CommentsButtonsList
                             list={c.comments}
-                            actionHandler={(c) => addCommentToNotes(c)}
+                            onClickHandler={(c) => addCommentToNotes(c)}
                           />
                         )
                       }

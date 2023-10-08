@@ -95,7 +95,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
         </Box>
 
         <CommentsForm
-          addComments={(newList) => {setCommentsList(newList)}}
+          addComments={(newList) => setCommentsList(newList)}
         />
 
         <Button sx={{ mt: 2 }} variant="outlined" onClick={addCategory}>

@@ -21,7 +21,7 @@ type CategoryListItemProps = {
     type: number;
     name: string;
     color: string;
-    comments: any[],
+    comments: string[],
   };
   onCategoryUpdate: () => void;
 };
