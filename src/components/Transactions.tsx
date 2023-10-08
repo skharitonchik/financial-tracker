@@ -57,7 +57,6 @@ export const Transactions: FC<TransactionsProps> = () => {
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [categoryType, setCategoryType] = useState(0);
   const transactionNotes = useRef('');
-  const [activeCategory, setActiveCategory] = useState([]);
   const [notesValue, setNotesValue] = useState('');
 
   const moneyFrom = useRef(0);
@@ -159,12 +158,6 @@ export const Transactions: FC<TransactionsProps> = () => {
       setIsLoadTransactions(false);
     }
   }, [transactionsData]);
-
-  useEffect(() => {
-    if(categoriesData && categoriesData.length > 0) {
-      setActiveCategory(categoriesData.filter((c:any) => c.id == transactionCategory))
-    }
-  }, [transactionCategory]);
 
   return (
     <>
@@ -303,16 +296,18 @@ export const Transactions: FC<TransactionsProps> = () => {
               </Box>
               <Divider />
               <Box sx={{ mt: 2 }}>
-                {activeCategory
-                  ? activeCategory.map((c:any) => {
-                    if(c.comments.length > 0) {
-                      return (
-                        <CommentsList
-                          type={'buttons'}
-                          list={c.comments}
-                          actionHandler={(c) => addCommentToNotes(c)}
-                        />
-                    )}})
+                {transactionCategory
+                  ? filteredCategories.map((c:any) => {
+                      if(c.id == transactionCategory) {
+                        return (
+                          <CommentsList
+                            type={'buttons'}
+                            list={c.comments}
+                            actionHandler={(c) => addCommentToNotes(c)}
+                          />
+                        )
+                      }
+                    })
                   : ''}
               </Box>
               <TextField
@@ -336,7 +331,7 @@ export const Transactions: FC<TransactionsProps> = () => {
             <Grid item xs={8}></Grid>
           </Grid>
 
-          <Button sx={{ mt: 2 }} variant="outlined" onClick={addTransaction}>
+          <Button sx={{ mt: 2 }} variant="outlined" onClick={/* addTransaction */ () => console.log(filteredCategories)}>
             Add Transaction
           </Button>
         </AccordionDetails>
