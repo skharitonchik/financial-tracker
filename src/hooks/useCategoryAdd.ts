@@ -7,7 +7,7 @@ export const useCategoryAdd = () => {
     mutationFn: (mutateVars: { requestData: any }) => {
       const { requestData } = mutateVars;
 
-      return postService(requestData, '/add/categories');
+      return postService(requestData, 'add-category');
     },
   });
 

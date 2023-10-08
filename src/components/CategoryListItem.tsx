@@ -51,7 +51,6 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
   };
 
   useEffect(() => {
-    console.info('%c  SERGEY categoriesEditData', 'background: #222; color: #bada55', categoriesEditData);
     onCategoryUpdate();
   }, [categoriesEditData]);
 

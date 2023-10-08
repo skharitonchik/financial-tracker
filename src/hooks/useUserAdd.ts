@@ -7,7 +7,7 @@ export const useUserAdd = () => {
     mutationFn: (mutateVars: { requestData: any }) => {
       const { requestData } = mutateVars;
 
-      return postService(requestData, '/add/users');
+      return postService(requestData, 'add-user');
     },
   });
 

@@ -7,7 +7,7 @@ export const useTransactionTransferAdd = () => {
     mutationFn: (mutateVars: { requestData: any }) => {
       const { requestData } = mutateVars;
 
-      return postService(requestData, '/add/transaction-transfer');
+      return postService(requestData, 'add-transaction-transfer');
     },
   });
 
