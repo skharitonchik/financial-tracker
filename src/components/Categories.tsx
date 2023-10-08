@@ -15,7 +15,6 @@ export const Categories: FC<CategoriesProps> = () => {
   useEffect(() => {
     if (isLoadCategoriesSuccess) {
       setIsLoadCategories(false);
-      console.info('%c  SERGEY categoriesData', 'background: #222; color: #bada55', categoriesData);
     }
   }, [categoriesData]);
 

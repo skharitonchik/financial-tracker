@@ -7,7 +7,7 @@ export const useFilterUpdate = () => {
     mutationFn: (mutateVars: { requestData: any }) => {
       const { requestData } = mutateVars;
 
-      return editService(requestData, '/update-filter');
+      return editService(requestData, 'update-filter');
     },
   });
 

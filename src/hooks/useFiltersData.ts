@@ -4,7 +4,7 @@ import { getService } from '../services';
 export const useFilterData = (enabled: boolean) => {
   const { data, isSuccess } = useQuery({
     queryKey: ['filters'],
-    queryFn: () => getService('/get-filters'),
+    queryFn: () => getService('filters'),
     enabled,
   });
 

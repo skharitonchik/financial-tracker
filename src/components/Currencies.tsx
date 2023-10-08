@@ -12,7 +12,7 @@ type CurrenciesProps = {};
 export const Currencies: FC<CurrenciesProps> = () => {
   const [isLoadCurrencies, setIsLoadCurrencies] = useState(true);
   const { currenciesData, isLoadCurrenciesSuccess } = useCurrenciesData(isLoadCurrencies);
-  const { currencyAddMutate, isLoadCurrencyAddSuccess, currencyAddData } = useCurrencyAdd();
+  const { currencyAddMutate, currencyAddData } = useCurrencyAdd();
   const [newCurrency, setNewCurrency] = useState('');
 
   const addCurrency = () => {
@@ -31,7 +31,6 @@ export const Currencies: FC<CurrenciesProps> = () => {
   useEffect(() => {
     if (isLoadCurrenciesSuccess) {
       setIsLoadCurrencies(false);
-      console.info('%c  SERGEY currenciesData', 'background: #222; color: #bada55', currenciesData);
     }
   }, [currenciesData]);
 

@@ -7,7 +7,7 @@ export const useCurrencyAdd = () => {
     mutationFn: (mutateVars: { requestData: any }) => {
       const { requestData } = mutateVars;
 
-      return postService(requestData, '/add/currencies');
+      return postService(requestData, 'add-currency');
     },
   });
 

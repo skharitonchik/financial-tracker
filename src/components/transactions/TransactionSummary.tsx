@@ -6,16 +6,10 @@ type TransactionSummaryProps = {
   filteredTransactions: {
     [key: string]: {
       plus: {
-        [key: string]: {
-          money: number;
-          name: string;
-        };
+        [key: string]: number;
       };
       minus: {
-        [key: string]: {
-          money: number;
-          name: string;
-        };
+        [key: string]: number;
       };
     };
   };
@@ -27,8 +21,8 @@ export const TransactionSummary: FC<TransactionSummaryProps> = ({ filteredTransa
     <>
       <Typography sx={{ color: '#919EAB' }}>{dayjs(date).format('MMMM D, YYYY')}</Typography>
       {Object.keys(filteredTransactions[date].plus).map((pt, index) => {
-        const money = filteredTransactions[date].plus[pt].money;
-        const name = filteredTransactions[date].plus[pt].name;
+        const money = filteredTransactions[date].plus[pt];
+        const name = pt;
 
         if (money === 0) {
           return '';
@@ -41,8 +35,8 @@ export const TransactionSummary: FC<TransactionSummaryProps> = ({ filteredTransa
         );
       })}
       {Object.keys(filteredTransactions[date].minus).map((mt, index) => {
-        const money = filteredTransactions[date].minus[mt].money;
-        const name = filteredTransactions[date].minus[mt].name;
+        const money = filteredTransactions[date].minus[mt];
+        const name = mt;
 
         if (money === 0) {
           return '';

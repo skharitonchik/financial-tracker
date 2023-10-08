@@ -4,7 +4,7 @@ import { getService } from '../services';
 export const useTransactionsData = (enabled: boolean) => {
   const { data, isSuccess } = useQuery({
     queryKey: ['transactions'],
-    queryFn: () => getService('/read/transactions'),
+    queryFn: () => getService('transactions'),
     enabled,
   });
 
