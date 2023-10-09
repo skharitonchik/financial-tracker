@@ -12,7 +12,7 @@ type UsersProps = {};
 export const Users: FC<UsersProps> = () => {
   const [isLoadUsers, setIsLoadUsers] = useState(true);
   const { usersData, isLoadUsersSuccess } = useUsersData(isLoadUsers);
-  const { userAddMutate, userAddData, isLoadUserAddSuccess } = useUserAdd();
+  const { userAddMutate, userAddData } = useUserAdd();
   const [newUser, setNewUser] = useState('');
 
   const addUser = () => {
@@ -31,7 +31,6 @@ export const Users: FC<UsersProps> = () => {
   useEffect(() => {
     if (isLoadUsersSuccess) {
       setIsLoadUsers(false);
-      console.info('%c  SERGEY usersData', 'background: #222; color: #bada55', usersData);
     }
   }, [usersData]);
 

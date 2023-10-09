@@ -7,7 +7,7 @@ export const useCardAdd = () => {
     mutationFn: (mutateVars: { requestData: any }) => {
       const { requestData } = mutateVars;
 
-      return postService(requestData, '/add/cards');
+      return postService(requestData, 'card-add');
     },
   });
 

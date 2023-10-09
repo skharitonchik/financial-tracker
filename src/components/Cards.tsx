@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, ChangeEvent } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Accordion from '@mui/material/Accordion';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -31,24 +31,6 @@ export const Cards: FC<CardsProps> = () => {
   const [currency, setCurrency] = useState('');
   const [cardUser, setCardUser] = useState('');
 
-  const handleChangeUsers = (event: ChangeEvent<HTMLInputElement>) => {
-    setCardUser(event.target.value);
-  };
-
-  const handleChangeCurrencies = (event: ChangeEvent<HTMLInputElement>) => {
-    setCurrency(event.target.value);
-  };
-
-  const getCardUser = (userId) => {
-    return usersData.find((c) => c.id === userId).name;
-  };
-
-  const getCardCurrency = (currencyId) => {
-    console.info('%c  SERGEY currenciesData', 'background: #222; color: #bada55', currenciesData);
-    console.info('%c  SERGEY currencyId', 'background: #222; color: #bada55', currencyId);
-    return currenciesData.find((c) => c.id === currencyId).name;
-  };
-
   const addCard = () => {
     cardAddMutate({
       requestData: {
@@ -69,7 +51,6 @@ export const Cards: FC<CardsProps> = () => {
   useEffect(() => {
     if (isLoadCardsSuccess) {
       setIsLoadCards(false);
-      console.info('%c  SERGEY cardsData', 'background: #222; color: #bada55', cardsData);
     }
   }, [cardsData]);
 
@@ -152,8 +133,8 @@ export const Cards: FC<CardsProps> = () => {
                   <TableRow key={c.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell>{c.name}</TableCell>
                     <TableCell>{c.money}</TableCell>
-                    <TableCell>{getCardCurrency(c.currency)}</TableCell>
-                    <TableCell>{getCardUser(c.user)}</TableCell>
+                    <TableCell>{c.currency}</TableCell>
+                    <TableCell>{c.user}</TableCell>
                   </TableRow>
                 );
               })

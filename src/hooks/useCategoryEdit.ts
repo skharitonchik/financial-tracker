@@ -7,7 +7,7 @@ export const useCategoryEdit = () => {
     mutationFn: (mutateVars: { requestData: any }) => {
       const { requestData } = mutateVars;
 
-      return editService(requestData, '/update/categories');
+      return editService(requestData, 'update-category');
     },
   });
 

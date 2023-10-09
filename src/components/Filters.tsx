@@ -11,11 +11,10 @@ type FiltersProps = {};
 
 export const Filters: FC<FiltersProps> = () => {
   const [isLoadFilters, setIsLoadFilters] = useState(true);
-  const { filtersData, isLoadFiltersSuccess } = useFilterData(isLoadFilters);
+  const { filtersData } = useFilterData(isLoadFilters);
   const updateAction = useCallback(() => setIsLoadFilters(true), []);
 
   useEffect(() => {
-    console.info('%c  SERGEY filtersData', 'background: #222; color: #bada55', filtersData);
     setIsLoadFilters(false);
   }, [filtersData]);
   return (
