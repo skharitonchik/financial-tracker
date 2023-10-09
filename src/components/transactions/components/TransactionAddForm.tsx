@@ -8,6 +8,7 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import Button from '@mui/material/Button';
 import { useCardsData, useCategoriesData, useTransactionAdd, useTransactionsData } from '../../../hooks';
 import dayjs, { Dayjs } from 'dayjs';
+import { CommentsButtonsList } from '../../CommentsButtonsList';
 
 type TransactionAddFormProps = {
   onTransactionAdd: () => void;
@@ -26,6 +27,7 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
   const transactionMoney = useRef<HTMLInputElement>(null);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const transactionNotes = useRef<HTMLInputElement>(null);
+  const [notesValue, setNotesValue] = useState('');
 
   const addTransaction = () => {
     transactionsAddMutate({
@@ -38,6 +40,14 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
         notes: transactionNotes?.current?.value,
       },
     });
+  };
+
+  const addCommentToNotes = (comment: string) => {
+    notesValue.length > 1
+    ? notesValue[notesValue.length-1] !== ' '
+      ? setNotesValue(notesValue.concat(` ${comment}`))
+      : setNotesValue(notesValue.concat(`${comment}`))
+    : setNotesValue(notesValue.concat(`${comment}`))
   };
 
   useEffect(() => {
@@ -110,6 +120,21 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
                 ))
               : ''}
           </Box>
+          <Divider />
+              <Box sx={{ mt: 2 }}>
+                {transactionCategory
+                  ? filteredCategories.map((c:any) => {
+                      if(c.id == transactionCategory) {
+                        return (
+                          <CommentsButtonsList
+                            list={c.comments}
+                            onClickHandler={(c) => addCommentToNotes(c)}
+                          />
+                        )
+                      }
+                    })
+                  : ''}
+              </Box>
           <TextField
             sx={{ mt: 2 }}
             defaultValue={''}
