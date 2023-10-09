@@ -33,7 +33,7 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
         date: transactionDate,
         card: transactionCard,
         category: transactionCategory,
-        money: parseInt(transactionMoney?.current?.value as string),
+        money: parseFloat(transactionMoney?.current?.value as string),
         type: categoryType,
         notes: transactionNotes?.current?.value,
       },
