@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import dayjs, { Dayjs } from 'dayjs';
 import Accordion from '@mui/material/Accordion';
@@ -43,7 +42,7 @@ export const Dashboard: FC<DashboardProps> = () => {
   const [outcome, setOutcome] = useState(0);
   const [doughnutData, setDoughnutData] = useState(DEFAULT_PIE_DATA);
   const { currenciesData, isLoadCurrenciesSuccess } = useCurrenciesData(isLoadDashboardData);
-  const { usersData, isLoadUsersSuccess } = useUsersData(isLoadDashboardData);
+  const { isLoadUsersSuccess } = useUsersData(isLoadDashboardData);
   const { cardsData, isLoadCardsSuccess } = useCardsData(isLoadDashboardData);
   const { categoriesData, isLoadCategoriesSuccess } = useCategoriesData(isLoadDashboardData);
   const { transactionsData, isLoadTransactionsSuccess } = useTransactionsData(isLoadDashboardData);
@@ -63,7 +62,7 @@ export const Dashboard: FC<DashboardProps> = () => {
           return;
         }
 
-        if (transactionCurrency && transactionCurrency.id !== filterCurrencyId) {
+        if (transactionCurrency && transactionCurrency !== filterCurrencyName) {
           return;
         }
 
@@ -128,7 +127,7 @@ export const Dashboard: FC<DashboardProps> = () => {
   const getTransactionCurrency = (transactionCard) => {
     const card = cardsData.find((c) => c.id === transactionCard);
 
-    return currenciesData.find((c) => c.id === card.currency);
+    return card.currency;
   };
 
   useEffect(() => {
