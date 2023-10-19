@@ -28,6 +28,7 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
   const [filteredCategories, setFilteredCategories] = useState([]);
   const transactionNotes = useRef<HTMLInputElement>(null);
 
+
   const addTransaction = () => {
     transactionsAddMutate({
       requestData: {
@@ -47,7 +48,7 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
       ? transactionNotes.current.value[transactionNotes.current.value.length-1] !== ' '
         ? transactionNotes.current.value = transactionNotes.current.value.concat(` ${comment}`)
         : transactionNotes.current.value = transactionNotes.current.value.concat(`${comment}`)
-      : transactionNotes.current.value = transactionNotes.current.value.concat(` ${comment}`)
+      : transactionNotes.current.value = transactionNotes.current.value.concat(`${comment}`)
     }
   };
 
@@ -147,7 +148,6 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
             type="text"
             label="Notes:"
             variant="outlined"
-            onChange={() => transactionNotes.current ?  console.log(transactionNotes.current.value) : console.log('error')}
           />
         </Grid>
         <Grid item xs={4}>
