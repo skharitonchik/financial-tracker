@@ -22,10 +22,10 @@ export const CommentsFormInput: FC<CommentsFormInputProps> = ({
 
   return (
     <ListItem
+      sx={{mt:2}}
       disablePadding>
       <TextField
         id={id}
-        sx={{mt:2}}
         size='small'
         fullWidth
         type='text'

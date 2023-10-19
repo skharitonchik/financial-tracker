@@ -27,7 +27,6 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
   const transactionMoney = useRef<HTMLInputElement>(null);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const transactionNotes = useRef<HTMLInputElement>(null);
-  const [notesValue, setNotesValue] = useState('');
 
   const addTransaction = () => {
     transactionsAddMutate({
@@ -43,11 +42,13 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
   };
 
   const addCommentToNotes = (comment: string) => {
-    notesValue.length > 1
-    ? notesValue[notesValue.length-1] !== ' '
-      ? setNotesValue(notesValue.concat(` ${comment}`))
-      : setNotesValue(notesValue.concat(`${comment}`))
-    : setNotesValue(notesValue.concat(`${comment}`))
+    if(transactionNotes.current) {
+      transactionNotes.current.value.length > 1
+      ? transactionNotes.current.value[transactionNotes.current.value.length-1] !== ' '
+        ? transactionNotes.current.value = transactionNotes.current.value.concat(` ${comment}`)
+        : transactionNotes.current.value = transactionNotes.current.value.concat(`${comment}`)
+      : transactionNotes.current.value = transactionNotes.current.value.concat(` ${comment}`)
+    }
   };
 
   useEffect(() => {
@@ -121,20 +122,20 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
               : ''}
           </Box>
           <Divider />
-              <Box sx={{ mt: 2 }}>
-                {transactionCategory
-                  ? filteredCategories.map((c:any) => {
-                      if(c.id == transactionCategory) {
-                        return (
-                          <CommentsButtonsList
-                            list={c.comments}
-                            onClickHandler={(c) => addCommentToNotes(c)}
-                          />
-                        )
-                      }
-                    })
-                  : ''}
-              </Box>
+          <Box sx={{ mt: 2 }}>
+            {transactionCategory
+              ? filteredCategories.map((c:any) => {
+                  if(c.id == transactionCategory) {
+                    return (
+                      <CommentsButtonsList
+                        list={c.comments}
+                        onClickHandler={(c) => addCommentToNotes(c)}
+                      />
+                    )
+                  }
+                })
+              : ''}
+          </Box>
           <TextField
             sx={{ mt: 2 }}
             defaultValue={''}
@@ -146,6 +147,7 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
             type="text"
             label="Notes:"
             variant="outlined"
+            onChange={() => transactionNotes.current ?  console.log(transactionNotes.current.value) : console.log('error')}
           />
         </Grid>
         <Grid item xs={4}>

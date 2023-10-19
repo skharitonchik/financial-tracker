@@ -18,6 +18,7 @@ export const CommentsButtonsList: FC<CommentsListProps> = ({
       {
         list.map((i) => (
           <Button
+            sx={{mr: 0.5}}
             variant='outlined'
             onClick={() => onClickHandler(i)}
             size='small'
