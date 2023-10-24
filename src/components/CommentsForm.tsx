@@ -58,6 +58,7 @@ export const CommentsForm: FC<CommentsFormProps> = ({
           list.map((i) => {
             return (
               <CommentsFormInput
+                key={i.id}
                 id={i.id}
                 removeInput={(id) => removeInput(id)}
                 defaultValue={i.value}
