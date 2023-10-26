@@ -48,17 +48,17 @@ export const CommentsForm: FC<CommentsFormProps> = ({
       return i
     }))
   }
-
-  useEffect(() => addComments(list.map((i:{id: string, value: string}) => i.value)), [list])
+  
+  useEffect(() => addComments(list.map((i:IList) => i.value)), [list])
 
   return (
     <>
       <Box>
         {
-          list.map((i) => {
+          list.map((i, index) => {
             return (
               <CommentsFormInput
-                key={i.id}
+                key={`comments-form-input-${index}`}
                 id={i.id}
                 removeInput={(id) => removeInput(id)}
                 defaultValue={i.value}

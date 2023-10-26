@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react'
-import { TextField, IconButton, ListItem } from '@mui/material';
+import { TextField, IconButton, ListItem, Box } from '@mui/material';
 import Close from '@mui/icons-material/Close';
 
 type CommentsFormInputProps = {
@@ -21,9 +21,8 @@ export const CommentsFormInput: FC<CommentsFormInputProps> = ({
   useEffect(() => setValue(defaultValue), [defaultValue])
 
   return (
-    <ListItem
-      sx={{mt:2}}
-      disablePadding>
+    <Box
+      sx={{display: 'flex', mt:2}}>
       <TextField
         id={id}
         size='small'
@@ -43,6 +42,6 @@ export const CommentsFormInput: FC<CommentsFormInputProps> = ({
       >
         <Close/>
       </IconButton>
-    </ListItem>
+    </Box>
   )
 }
