@@ -16,8 +16,10 @@ export const CommentsButtonsList: FC<CommentsListProps> = ({
       aria-label="outlined button group"
     >
       {
-        list.map((i) => (
+        list.map((i, index) => (
           <Button
+            key={`comments-button-${index}`}
+            sx={{mr: 0.5}}
             variant='outlined'
             onClick={() => onClickHandler(i)}
             size='small'
