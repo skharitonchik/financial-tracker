@@ -11,11 +11,11 @@ import dayjs, { Dayjs } from 'dayjs';
 import { CommentsButtonsList } from '../../CommentsButtonsList';
 
 interface ITransactionCategory {
-  id: string,
-  name: string,
-  type: number,
-  color: string,
-  comments: string[]
+  id: string;
+  name: string;
+  type: number;
+  color: string;
+  comments: string[];
 }
 
 type TransactionAddFormProps = {
@@ -40,9 +40,8 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
     name: '',
     type: -1,
     color: '',
-    comments: []
+    comments: [],
   });
-
 
   const addTransaction = () => {
     transactionsAddMutate({
@@ -58,22 +57,22 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
   };
 
   const addCommentToNotes = (comment: string) => {
-    let t = transactionNotes.current.value
+    let t = transactionNotes.current.value;
 
     t.length > 1
-      ? t[t.length-1] !== ' '
-        ? t = t.concat(` ${comment}`)
-        : t = t.concat(`${comment}`)
-      : t = t.concat(`${comment}`)
+      ? t[t.length - 1] !== ' '
+        ? (t = t.concat(` ${comment}`))
+        : (t = t.concat(`${comment}`))
+      : (t = t.concat(`${comment}`));
 
-    document.getElementById('notes')?.focus()
+    document.getElementById('notes')?.focus();
 
-    return transactionNotes.current.value = t
+    return (transactionNotes.current.value = t);
   };
 
   useEffect(() => {
-    setTransactionCategory(filteredCategories.find(i => i.id === transactionCategoryID))
-  }, [transactionCategoryID])
+    setTransactionCategory(filteredCategories.find((i) => i.id === transactionCategoryID));
+  }, [transactionCategoryID]);
 
   useEffect(() => {
     if (categoriesData && categoriesData.length > 0) {
@@ -147,12 +146,11 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
           </Box>
           <Divider />
           <Box sx={{ mt: 2 }}>
-            {transactionCategory && transactionCategory.comments.length > 0
-              ? <CommentsButtonsList
-                  list={transactionCategory.comments}
-                  onClickHandler={(c) => addCommentToNotes(c)}
-                />
-              : ''}
+            {transactionCategory && transactionCategory.comments && transactionCategory.comments.length > 0 ? (
+              <CommentsButtonsList list={transactionCategory.comments} onClickHandler={(c) => addCommentToNotes(c)} />
+            ) : (
+              ''
+            )}
           </Box>
           <TextField
             sx={{ mt: 2 }}
@@ -168,7 +166,7 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
           />
         </Grid>
         <Grid item xs={4}>
-          <DateCalendar value={transactionDate} onChange={(newValue) => setTransactionDate(newValue)}/>
+          <DateCalendar value={transactionDate} onChange={(newValue) => setTransactionDate(newValue)} />
         </Grid>
       </Grid>
 

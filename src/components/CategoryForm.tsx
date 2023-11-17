@@ -46,7 +46,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
         name: newCategory,
         type: categoryType,
         color,
-        comments: commentsList,
+        comments: commentsList.filter((c) => c),
       },
     });
   };
@@ -82,7 +82,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
         </Box>
 
         <Box sx={{ mt: 2 }}>
-          {CATEGORY_TYPES.map((c: any, i: number) => (
+          {CATEGORY_TYPES.map((c: any) => (
             <RadioGroup
               key={c.value}
               inline={true}
@@ -94,9 +94,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
           ))}
         </Box>
 
-        <CommentsForm
-          addComments={(newList) => setCommentsList(newList)}
-        />
+        <CommentsForm addComments={(newList) => setCommentsList(newList)} />
 
         <Button sx={{ mt: 2 }} variant="outlined" onClick={addCategory}>
           Add category

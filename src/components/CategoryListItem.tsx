@@ -21,7 +21,7 @@ type CategoryListItemProps = {
     type: number;
     name: string;
     color: string;
-    comments: string[],
+    comments: string[];
   };
   onCategoryUpdate: () => void;
 };
@@ -31,7 +31,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
   const [updatedName, setUpdatedName] = useState(category.name);
   const categoryColor = useRef<HTMLInputElement>(null);
   const { categoryEditMutate, categoriesEditData } = useCategoryEdit();
-  const [commentsList, setCommentsList] = useState(category.comments);
+  const [commentsList, setCommentsList] = useState(category.comments ?? []);
 
   const parseCategoryType = (typeId) => {
     switch (typeId) {
@@ -50,7 +50,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
         ...category,
         name: updatedName,
         color: categoryColor?.current?.value,
-        comments: commentsList,
+        comments: commentsList.filter((c) => c),
       },
     });
     setIsEditMode(false);
@@ -124,9 +124,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
               primary={category.name}
               secondary={parseCategoryType(category.type)}
             />
-            <CommentsList
-              list={commentsList}
-            />
+            <CommentsList list={commentsList} />
           </Box>
         </ListItemButton>
       </ListItem>
