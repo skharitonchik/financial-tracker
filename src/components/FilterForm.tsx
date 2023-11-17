@@ -4,16 +4,10 @@ import Box from '@mui/material/Box';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import Button from '@mui/material/Button';
+import { generate_uuidv4 } from '../utils';
+
 import { useFilterAdd, useFilterUpdate } from '../hooks';
 
-function generate_uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    const uuid = (Math.random() * 16) | 0,
-      v = c == 'x' ? uuid : (uuid & 0x3) | 0x8;
-
-    return uuid.toString(16);
-  });
-}
 interface IFilter {
   id: string;
   name?: string;
