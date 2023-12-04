@@ -12,6 +12,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 import { useCategoryEdit } from '../hooks';
+import { CommentsForm } from './CommentsForm';
+import { CommentsList } from './CommentsList';
 
 type CategoryListItemProps = {
   category: {
@@ -19,6 +21,7 @@ type CategoryListItemProps = {
     type: number;
     name: string;
     color: string;
+    comments: string[];
   };
   onCategoryUpdate: () => void;
 };
@@ -28,6 +31,8 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
   const [updatedName, setUpdatedName] = useState(category.name);
   const categoryColor = useRef<HTMLInputElement>(null);
   const { categoryEditMutate, categoriesEditData } = useCategoryEdit();
+  const [commentsList, setCommentsList] = useState(category.comments ?? []);
+
   const parseCategoryType = (typeId) => {
     switch (typeId) {
       case 0:
@@ -45,6 +50,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
         ...category,
         name: updatedName,
         color: categoryColor?.current?.value,
+        comments: commentsList.filter((c) => c),
       },
     });
     setIsEditMode(false);
@@ -86,6 +92,10 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
                 />
               </Box>
             </Box>
+            <CommentsForm
+              addComments={(newList) => setCommentsList(newList)}
+              initialList={commentsList.length > 0 ? commentsList : undefined}
+            />
           </Box>
         </ListItem>
       </>
@@ -108,11 +118,14 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
               <AcUnitIcon sx={{ color: category.color }} />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText
-            sx={{ color: category.type === 0 ? '#FF4842' : '' || category.type === 1 ? '#008c7e' : '' }}
-            primary={category.name}
-            secondary={parseCategoryType(category.type)}
-          />
+          <Box>
+            <ListItemText
+              sx={{ color: category.type === 0 ? '#FF4842' : '' || category.type === 1 ? '#008c7e' : '', margin: 0 }}
+              primary={category.name}
+              secondary={parseCategoryType(category.type)}
+            />
+            <CommentsList list={commentsList} />
+          </Box>
         </ListItemButton>
       </ListItem>
     </>

@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 
 import { RadioGroup } from './RadioGroup';
 import { useCategoryAdd } from '../hooks';
+import { CommentsForm } from './CommentsForm';
 
 const CATEGORY_TYPES = [
   {
@@ -35,6 +36,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
   const [categoryType, setCategoryType] = useState(0);
   const categoryColor = useRef<HTMLInputElement>(null);
   const { categoryAddMutate, categoriesPostData } = useCategoryAdd();
+  const [commentsList, setCommentsList] = useState<any>([]);
 
   const addCategory = () => {
     const color = categoryColor.current ? categoryColor.current.value : '';
@@ -44,6 +46,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
         name: newCategory,
         type: categoryType,
         color,
+        comments: commentsList.filter((c) => c),
       },
     });
   };
@@ -79,7 +82,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
         </Box>
 
         <Box sx={{ mt: 2 }}>
-          {CATEGORY_TYPES.map((c: any, i: number) => (
+          {CATEGORY_TYPES.map((c: any) => (
             <RadioGroup
               key={c.value}
               inline={true}
@@ -90,6 +93,8 @@ export const CategoryForm: FC<CategoryFormProps> = ({ onCategoryAdd }) => {
             />
           ))}
         </Box>
+
+        <CommentsForm addComments={(newList) => setCommentsList(newList)} />
 
         <Button sx={{ mt: 2 }} variant="outlined" onClick={addCategory}>
           Add category
