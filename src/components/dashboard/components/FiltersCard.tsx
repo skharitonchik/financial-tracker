@@ -31,7 +31,7 @@ export const FiltersCard: FC<FiltersCardProps> = ({ onDateFromUpdate, onDateToUp
   useEffect(() => onDateFromUpdate(dateFrom), [dateFrom]);
   useEffect(() => onDateToUpdate(dateTo), [dateTo]);
   useEffect(() => {
-    if (filtersData) {
+    if (filtersData && filtersData.length > 0) {
       const activeParent = filtersData[filtersData.length - 1];
       const activeChild = activeParent.childFilters[activeParent.childFilters.length - 1];
       if (activeChild) {
