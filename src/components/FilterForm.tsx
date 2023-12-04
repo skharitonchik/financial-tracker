@@ -82,60 +82,68 @@ export const FilterForm: FC<FilterFormProps> = ({ savedFilter, updateAction }) =
       <Box>
         {childFilters.map((f, i) => {
           return (
-            <Box key={`child-filter-${f.id}`} sx={{ display: 'flex', mt: 2, pl: 10 }}>
-              <TextField
-                defaultValue={f.name}
-                name={`child-filter-${f.id}`}
-                size="small"
-                fullWidth
-                type="text"
-                label="Child filter name"
-                onChange={({ target }) => {
-                  const itemToChange = childFilters.find((i) => i.id === f.id);
+            <Box 
+              sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", mt: 2}}
+              key={`child-filter-${f.id}`} >
+              <Box
+                sx={{minWidth: "600px"}}>
+                <TextField
+                  defaultValue={f.name}
+                  name={`child-filter-${f.id}`}
+                  size="small"
+                  type="text"
+                  label="Child filter name"
+                  onChange={({ target }) => {
+                    const itemToChange = childFilters.find((i) => i.id === f.id);
 
-                  if (itemToChange) {
-                    itemToChange.name = target.value;
-                  }
-                }}
-                variant="outlined"
-              />
-              <DatePicker
-                defaultValue={dayjs(f.dateFrom)}
-                sx={{ ml: 2 }}
-                slotProps={{ textField: { size: 'small', fullWidth: true, error: false } }}
-                onChange={(e: any) => {
-                  const itemToChange = childFilters.find((i) => i.id === f.id);
+                    if (itemToChange) {
+                      itemToChange.name = target.value;
+                    }
+                  }}
+                  variant="outlined"
+                />
 
-                  if (itemToChange) {
-                    itemToChange.dateFrom = dayjs(e).format('YYYY-MM-DD');
-                  }
-                }}
-                label="Date from"
-              />
-              <DatePicker
-                defaultValue={dayjs(f.dateTo)}
-                sx={{ ml: 2 }}
-                slotProps={{ textField: { size: 'small', fullWidth: true, error: false } }}
-                onChange={(e: any) => {
-                  const itemToChange = childFilters.find((i) => i.id === f.id);
+                <Box
+                sx={{display: "flex", mt: 2}}>
+                  <DatePicker
+                    defaultValue={dayjs(f.dateFrom)}
+                    slotProps={{ textField: { size: 'small', fullWidth: true, error: false } }}
+                    onChange={(e: any) => {
+                      const itemToChange = childFilters.find((i) => i.id === f.id);
 
-                  if (itemToChange) {
-                    itemToChange.dateTo = dayjs(e).format('YYYY-MM-DD');
-                  }
-                }}
-                label="Date to"
-              />
+                      if (itemToChange) {
+                        itemToChange.dateFrom = dayjs(e).format('YYYY-MM-DD');
+                      }
+                    }}
+                    label="Date from"
+                  />
+                  <DatePicker
+                    defaultValue={dayjs(f.dateTo)}
+                    sx={{ ml: 2 }}
+                    slotProps={{ textField: { size: 'small', fullWidth: true, error: false } }}
+                    onChange={(e: any) => {
+                      const itemToChange = childFilters.find((i) => i.id === f.id);
+
+                      if (itemToChange) {
+                        itemToChange.dateTo = dayjs(e).format('YYYY-MM-DD');
+                      }
+                    }}
+                    label="Date to"
+                  />
+                </Box>
+              </Box>
 
               <Button
-                sx={{ ml: 2 }}
+                variant="outlined"
                 onClick={() => setChildFilters((oldValue) => oldValue.filter((o) => o.id !== f.id))}>
                 Remove
               </Button>
             </Box>
           );
         })}
+
         <Button
-          sx={{ mt: 2, ml: 10 }}
+          sx={{ mt: 2 }}
           variant="outlined"
           onClick={() => {
             setChildFilters((oldValue) => [
