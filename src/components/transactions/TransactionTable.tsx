@@ -47,9 +47,7 @@ export const TransactionTable: FC<TransactionsProps> = ({ transactions }) => {
   const [sortedDates, setSortedDates] = useState<string[]>([]);
 
   useEffect(() => {
-    if (transactions && Object.keys(transactions).length > 0) {
-      setShowTable(true);
-    }
+    setShowTable(transactions && Object.keys(transactions).length > 0);
   }, [transactions]);
 
   useEffect(() => {
