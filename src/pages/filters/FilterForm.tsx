@@ -4,9 +4,9 @@ import Box from '@mui/material/Box';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import Button from '@mui/material/Button';
-import { generate_uuidv4 } from '../utils';
 
-import { useFilterAdd, useFilterUpdate } from '../hooks';
+import { generate_uuidv4 } from '../../utils';
+import { useFilterAdd, useFilterUpdate } from '../../hooks';
 
 interface IFilter {
   id: string;

@@ -1,9 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import List from '@mui/material/List';
 
-import { useCategoriesData } from '../hooks';
-import { CategoryForm } from './CategoryForm';
-import { CategoryListItem } from './CategoryListItem';
+import { useCategoriesData } from '../../hooks';
+import { CategoryListItem, CategoryForm } from './components';
 
 type CategoriesProps = {};
 

@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import { Button, Box } from '@mui/material';
 
-import { generate_uuidv4 } from '../utils';
+import { generate_uuidv4 } from '../../../utils';
 
 import { CommentsFormInput } from './CommentsFormInput';
 

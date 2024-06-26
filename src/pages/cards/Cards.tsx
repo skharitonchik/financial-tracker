@@ -15,8 +15,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Divider from '@mui/material/Divider';
 
-import { useCardAdd, useCardsData, useCurrenciesData, useUsersData } from '../hooks';
-import { RadioGroup } from './RadioGroup';
+import { useCardAdd, useCardsData, useCurrenciesData, useUsersData } from '../../hooks';
+import { RadioGroup } from '../../components';
 
 type CardsProps = {};
 
