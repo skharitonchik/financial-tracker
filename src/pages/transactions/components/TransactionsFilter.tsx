@@ -1,34 +1,15 @@
-import { FC, useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
+import {FC} from 'react';
 import Accordion from '@mui/material/Accordion';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { useTransactionsByDayData, useUsersData, useCategoriesData, useFilteredTransactions } from '../../hooks';
-import dayjs, { Dayjs } from 'dayjs';
-
-import { RadioGroup } from '../RadioGroup';
-import { TransactionTable } from './TransactionTable';
-import { TransactionTransferForm } from './components/TransactionTransferForm';
-import { TransactionAddForm } from './components/TransactionAddForm';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Box from '@mui/material/Box';
+import { RadioGroup } from '../../../components';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
-const CATEGORY_TYPES = [
-  {
-    value: 0,
-    name: 'Расход',
-  },
-  {
-    value: 1,
-    name: 'Доход',
-  },
-  {
-    value: 2,
-    name: 'Перевод',
-  },
-];
+import dayjs, { Dayjs } from 'dayjs';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 const SAVED_FILTERS = [
   {
@@ -49,26 +30,26 @@ const SAVED_FILTERS = [
   },
 ];
 
-type TransactionsProps = {};
+type TransactionsFilterProps = {
+  categoriesData: any,
+  filteredMinus: any,
+  filteredPlus: any,
+  usersData: any,
+  updateFilters: (config: any) => void
+};
 
-export const Transactions: FC<TransactionsProps> = () => {
-  const [isLoadTransactions, setIsLoadTransactions] = useState(true);
-  const { transactionsByDayData } = useTransactionsByDayData(isLoadTransactions);
-  const [categoryType, setCategoryType] = useState(0);
+export const TransactionsFilter: FC<TransactionsFilterProps> = ({
+                                                                        categoriesData,
+                                                                        usersData,
+                                                                        filteredMinus,
+                                                                        filteredPlus,
+                                                                        updateFilters,
+                                                                      }) => {
   const [savedFilter, setSavedFilter] = useState(0);
   const [dateFrom, setDateFrom] = useState<Dayjs | null>(dayjs(''));
   const [dateTo, setDateTo] = useState<Dayjs | null>(dayjs(''));
-  const [isLoadUsers, setIsLoadUsers] = useState(true);
-  const [isLoadCategories, setIsLoadCategories] = useState(true);
-  const { usersData, isLoadUsersSuccess } = useUsersData(isLoadUsers);
-  const { categoriesData, isLoadCategoriesSuccess } = useCategoriesData(isLoadCategories);
   const [selectedUser, setSelectedUser] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-
-  const onTransactionUpdateAction = () => setIsLoadTransactions(true);
-
-  const { filteredTransactionsData, filteredTransactionsMutate } = useFilteredTransactions();
-
   const convertSavedFilters = () => {
     const today = new Date();
     const setDates = (daysAgoCount) => {
@@ -77,6 +58,7 @@ export const Transactions: FC<TransactionsProps> = () => {
       setDateFrom(dayjs(daysAgo));
       setDateTo(dayjs(today));
     };
+
 
     switch (savedFilter) {
       case 0:
@@ -95,66 +77,36 @@ export const Transactions: FC<TransactionsProps> = () => {
   };
 
   useEffect(() => {
-    if (isLoadUsersSuccess) {
-      setIsLoadUsers(false);
-    }
-  }, [usersData]);
-
-  useEffect(() => {
-    if (isLoadCategoriesSuccess) {
-      setIsLoadCategories(false);
-    }
-  }, [categoriesData]);
-
-  useEffect(() => {
-    setIsLoadTransactions(false);
-  }, [transactionsByDayData]);
-
-  useEffect(() => {
     convertSavedFilters();
   }, [savedFilter]);
 
   useEffect(() => {
-    filteredTransactionsMutate({
-      requestData: {
-        user: selectedUser,
-        category: selectedCategory,
-        dateFrom, dateTo
-      },
+    updateFilters({
+      selectedUser, selectedCategory, dateTo, dateFrom
     });
   }, [selectedUser, selectedCategory, dateTo, dateFrom]);
 
   return (
     <>
       <Accordion sx={{ mb: 2 }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-          <Typography>Add new Transaction</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Box sx={{ mb: 2 }}>
-            {CATEGORY_TYPES.map((c: any) => (
-              <RadioGroup
-                key={c.value}
-                inline={true}
-                value={c.value}
-                activeItem={categoryType}
-                activeItemChange={(value: string) => setCategoryType(parseInt(value))}
-                label={c.name}
-              />
-            ))}
-          </Box>
-          {categoryType === 0 || categoryType === 1 ? (
-            <TransactionAddForm categoryType={categoryType} onTransactionAdd={onTransactionUpdateAction} />
-          ) : (
-            ''
-          )}
-          {categoryType === 2 ? <TransactionTransferForm onTransactionTransfer={onTransactionUpdateAction} /> : ''}
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion sx={{ mb: 2 }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="filterpanel-content" id="filterpanel-header">
-          <Typography>Filter</Typography>
+          <Typography sx={{ minWidth: 125 }}>Filter</Typography>
+          {
+            Object.keys(filteredPlus).map((currencyItem, index) => {
+              return <Typography key={`${currencyItem}-${index}`}
+                                 sx={{ ml: 3, color: '#008c7e', display: 'inline-flex' }}>
+                {filteredPlus[currencyItem].toFixed(2)} {currencyItem}
+              </Typography>;
+            })
+          }
+          {
+            Object.keys(filteredMinus).map((currencyItem, index) => {
+              return <Typography key={`${currencyItem}-${index}`}
+                                 sx={{ ml: 3, color: '#FF4842', display: 'inline-flex' }}>
+                {filteredMinus[currencyItem].toFixed(2)} {currencyItem}
+              </Typography>;
+            })
+          }
         </AccordionSummary>
         <AccordionDetails>
           <Box sx={{ mb: 2 }}>
@@ -197,15 +149,16 @@ export const Transactions: FC<TransactionsProps> = () => {
                 value={'Any'}
               >{'Any'}
               </MenuItem>
-              {isLoadUsersSuccess
-                ? usersData.map((u, index) => (
+              {
+                usersData.map((u, index) => (
                   <MenuItem
                     key={`filter-user-select-item-${index}`}
                     value={u.name}
                   >{u.name}
                   </MenuItem>
                 ))
-                : ''}
+
+              }
             </Select>
           </FormControl>
 
@@ -227,21 +180,19 @@ export const Transactions: FC<TransactionsProps> = () => {
                 value={'Any'}
               >{'Any'}
               </MenuItem>
-              {isLoadCategoriesSuccess
-                ? categoriesData.map((c, index) => (
+              {
+                categoriesData.map((c, index) => (
                   <MenuItem
                     key={`filter-category-select-item-${index}`}
                     value={c.id}
                   >{c.name}
                   </MenuItem>
                 ))
-                : ''}
+              }
             </Select>
           </FormControl>
         </AccordionDetails>
       </Accordion>
-
-      <TransactionTable transactions={filteredTransactionsData ? filteredTransactionsData : transactionsByDayData} />
     </>
   );
 };

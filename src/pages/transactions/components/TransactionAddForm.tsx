@@ -2,13 +2,12 @@ import { FC, useEffect, useRef, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import { RadioGroup } from '../../RadioGroup';
 import Divider from '@mui/material/Divider';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import Button from '@mui/material/Button';
-import { useCardsData, useCategoriesData, useTransactionAdd, useTransactionsData } from '../../../hooks';
+import { useCardsData, useCategoriesData, useTransactionAdd } from '../../../hooks';
 import dayjs, { Dayjs } from 'dayjs';
-import { CommentsButtonsList } from '../../CommentsButtonsList';
+import { RadioGroup, CommentsButtonsList } from '../../../components';
 
 interface ITransactionCategory {
   id: string;
@@ -27,7 +26,6 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
   const [isLoadTransactions, setIsLoadTransactions] = useState(true);
   const { cardsData, isLoadCardsSuccess } = useCardsData(isLoadTransactions);
   const { categoriesData, isLoadCategoriesSuccess } = useCategoriesData(isLoadTransactions);
-  const { transactionsData, isLoadTransactionsSuccess } = useTransactionsData(isLoadTransactions);
   const { transactionsAddMutate, transactionsPostData } = useTransactionAdd();
   const [transactionCard, setTransactionCard] = useState('');
   const [transactionCategoryID, setTransactionCategoryID] = useState('');
@@ -95,10 +93,10 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
   }, [transactionsPostData]);
 
   useEffect(() => {
-    if (isLoadTransactionsSuccess) {
+    if (isLoadCardsSuccess && isLoadCategoriesSuccess) {
       setIsLoadTransactions(false);
     }
-  }, [transactionsData]);
+  }, [cardsData, categoriesData]);
 
   return (
     <>

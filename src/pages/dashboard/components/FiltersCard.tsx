@@ -6,10 +6,10 @@ import Typography from '@mui/material/Typography';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
-import { RadioGroup } from '../../RadioGroup';
 import dayjs, { Dayjs } from 'dayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import { RadioGroup } from '../../../components';
 import { useFilterData } from '../../../hooks';
 
 type FiltersCardProps = {

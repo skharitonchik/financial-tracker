@@ -5,7 +5,45 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
-import { Currencies, Users, Categories, Cards, Transactions, Dashboard, Filters } from './components';
+import { Transactions, Currencies, Cards, Dashboard, Filters, Categories, Users, YearTable } from './pages';
+
+
+const PAGES_CONFIG = [
+  {
+    label: 'Dashboard',
+    component: <Dashboard />,
+  },
+  {
+    label: 'Transactions',
+    component: <Transactions />,
+  },
+  {
+    label: 'Year Table',
+    component: <YearTable/>
+  },
+  {
+    label: 'Cards',
+    component: <Cards />,
+  },
+  {
+    label: 'Categories',
+    component: <Categories />,
+  },
+  {
+    label: 'Users',
+    component: <Users />,
+  },
+  {
+    label: 'Currencies',
+    component: <Currencies />,
+  },
+  {
+    label: 'Saved Filters',
+    component: <Filters />,
+  },
+
+
+];
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -50,36 +88,19 @@ export default function App() {
         <Box sx={{ my: 4 }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab label="Dashboard" {...a11yProps(0)} />
-              <Tab label="Transactions" {...a11yProps(0)} />
-              <Tab label="Cards" {...a11yProps(1)} />
-              <Tab label="Categories" {...a11yProps(2)} />
-              <Tab label="Users" {...a11yProps(3)} />
-              <Tab label="Currencies" {...a11yProps(4)} />
-              <Tab label="Saved Filters" {...a11yProps(5)} />
+              {
+                PAGES_CONFIG.map((page, index) =>
+                  <Tab key={`tab-${index}`} label={page.label} {...a11yProps(index)} />)
+              }
             </Tabs>
           </Box>
-          <TabPanel value={value} index={0}>
-            <Dashboard />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Transactions />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <Cards />
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            <Categories />
-          </TabPanel>
-          <TabPanel value={value} index={4}>
-            <Users />
-          </TabPanel>
-          <TabPanel value={value} index={5}>
-            <Currencies />
-          </TabPanel>
-          <TabPanel value={value} index={6}>
-            <Filters />
-          </TabPanel>
+          {
+            PAGES_CONFIG.map((page, index) =>
+              <TabPanel key={`tab-panel-${index}`} value={value} index={index}>
+                {page.component}
+              </TabPanel>,
+            )
+          }
         </Box>
       </Container>
     </QueryClientProvider>

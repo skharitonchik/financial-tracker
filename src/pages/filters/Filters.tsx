@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import { FilterForm } from './FilterForm';
-import { useFilterData } from '../hooks';
+import { useFilterData } from '../../hooks';
 
 type FiltersProps = {};
 

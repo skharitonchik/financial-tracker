@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import { useCurrenciesData, useCurrencyAdd } from '../hooks';
+import { useCurrenciesData, useCurrencyAdd } from '../../hooks';
 
 type CurrenciesProps = {};
 

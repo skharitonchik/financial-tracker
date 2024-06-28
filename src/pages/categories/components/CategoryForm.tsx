@@ -8,8 +8,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 
-import { RadioGroup } from './RadioGroup';
-import { useCategoryAdd } from '../hooks';
+import { RadioGroup } from '../../../components';
+import { useCategoryAdd } from '../../../hooks';
 import { CommentsForm } from './CommentsForm';
 
 const CATEGORY_TYPES = [

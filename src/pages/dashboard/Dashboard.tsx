@@ -11,9 +11,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 
-import { useTransactionsData, useCategoriesData, useCardsData, useCurrenciesData, useUsersData } from '../hooks';
-import { RadioGroup } from './RadioGroup';
-import { FiltersCard } from './dashboard/components/FiltersCard';
+import { useTransactionsData, useCategoriesData, useCardsData, useCurrenciesData, useUsersData } from '../../hooks';
+import { RadioGroup } from '../../components';
+import { FiltersCard } from './components';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -181,18 +181,18 @@ export const Dashboard: FC<DashboardProps> = () => {
         <AccordionDetails>
           {isLoadCurrenciesSuccess
             ? currenciesData.map((c: any) => (
-                <RadioGroup
-                  key={c.id}
-                  inline={true}
-                  value={c.id}
-                  activeItem={filterCurrencyId}
-                  activeItemChange={(value) => {
-                    setFilterCurrencyId(value);
-                    setFilterCurrencyName(c.name);
-                  }}
-                  label={c.name}
-                />
-              ))
+              <RadioGroup
+                key={c.id}
+                inline={true}
+                value={c.id}
+                activeItem={filterCurrencyId}
+                activeItemChange={(value) => {
+                  setFilterCurrencyId(value);
+                  setFilterCurrencyName(c.name);
+                }}
+                label={c.name}
+              />
+            ))
             : ''}
         </AccordionDetails>
       </Accordion>
@@ -224,6 +224,16 @@ export const Dashboard: FC<DashboardProps> = () => {
                     legend: {
                       position: 'bottom',
                       display: true,
+                    },
+                    tooltip: {
+                      callbacks: {
+                        label: (d) => {
+                          const { parsed } = d;
+
+                          const percentage = Number(parsed * 100 / income).toFixed(2);
+                          return `${parsed} (${percentage}) %`
+                        },
+                      },
                     },
                   },
                 }}

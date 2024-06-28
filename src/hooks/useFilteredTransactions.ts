@@ -3,8 +3,8 @@ import { postService } from '../services';
 
 export const useFilteredTransactions = () => {
   
-  const { data, mutate } = useMutation({
-    mutationKey: ['testRequest'],
+  const { data, mutate, isSuccess } = useMutation({
+    mutationKey: ['filtered_transactions'],
     mutationFn: (mutateVars: { requestData: any}) => {
       const { requestData } = mutateVars;
 
@@ -14,6 +14,7 @@ export const useFilteredTransactions = () => {
 
   return {
     filteredTransactionsData: data,
+    isFilteredTransactionsDataSuccess: isSuccess,
     filteredTransactionsMutate: mutate,
   };
 };

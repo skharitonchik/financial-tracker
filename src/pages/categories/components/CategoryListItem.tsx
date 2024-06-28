@@ -11,7 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
-import { useCategoryEdit } from '../hooks';
+import { useCategoryEdit } from '../../../hooks';
 import { CommentsForm } from './CommentsForm';
 import { CommentsList } from './CommentsList';
 
