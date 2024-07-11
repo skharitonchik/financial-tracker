@@ -17,3 +17,4 @@ export * from './useFilterUpdate';
 export * from './useTransactionsByDayData';
 export * from './useFilteredTransactions';
 export * from './useFilteredByMonthTransactions';
+export * from './useCategoriesSettingsData';

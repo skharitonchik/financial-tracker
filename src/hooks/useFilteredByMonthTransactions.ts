@@ -13,8 +13,8 @@ export const useFilteredByMonthTransactions = () => {
   });
 
   return {
-    filteredByMonthTransactions: data,
-    isFilteredByMonthTransactions: isSuccess,
+    filteredByMonthTransactionsData: data,
+    isFilteredByMonthTransactionsSuccess: isSuccess,
     filteredByMonthTransactionsMutate: mutate,
   };
 };

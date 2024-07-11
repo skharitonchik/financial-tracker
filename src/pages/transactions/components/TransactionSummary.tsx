@@ -19,7 +19,7 @@ type TransactionSummaryProps = {
 export const TransactionSummary: FC<TransactionSummaryProps> = ({ filteredTransactions, date }) => {
   return (
     <>
-      <Typography sx={{ color: '#919EAB', minWidth: 125 }}>{dayjs(date).format('MMMM D, YYYY')}</Typography>
+      <Typography sx={{ color: '#919EAB', minWidth: 135 }}>{dayjs(date).format('MMMM D, YYYY')}</Typography>
       {Object.keys(filteredTransactions[date].plus).map((pt, index) => {
         const money = filteredTransactions[date].plus[pt];
         const name = pt;
