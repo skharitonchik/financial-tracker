@@ -12,8 +12,9 @@ export const CommentsList: FC<CommentsListProps> = ({
     <Box
     sx={{display: 'flex'}}>
       {
-        list.map((i) => (
+        list.map((i, index: number) => (
           <Typography
+            key={index}
             sx={{color: 'grey', fontSize: 14, width: 'auto', mr: 1}}
           >
             {i}
