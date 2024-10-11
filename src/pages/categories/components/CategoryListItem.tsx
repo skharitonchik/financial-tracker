@@ -6,12 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import AcUnitIcon from '@mui/icons-material/AcUnit';
 import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 import { useCategoryEdit } from '../../../hooks';
+import { IconsDropdown, CategoryIcon } from '../../../components';
 import { CommentsForm } from './CommentsForm';
 import { CommentsList } from './CommentsList';
 
@@ -22,12 +22,15 @@ type CategoryListItemProps = {
     name: string;
     color: string;
     comments: string[];
+    icon: string;
   };
   onCategoryUpdate: () => void;
 };
 
 export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCategoryUpdate }) => {
   const [isEditMode, setIsEditMode] = useState(false);
+  const [categoryIcon, setCategoryIcon] = useState(category.icon);
+
   const [updatedName, setUpdatedName] = useState(category.name);
   const categoryColor = useRef<HTMLInputElement>(null);
   const { categoryEditMutate, categoriesEditData } = useCategoryEdit();
@@ -50,6 +53,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
         ...category,
         name: updatedName,
         color: categoryColor?.current?.value,
+        icon: categoryIcon,
         comments: commentsList.filter((c) => c),
       },
     });
@@ -71,8 +75,10 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
             </IconButton>
           }>
           <Box sx={{ m: 2, ml: 4 }}>
-            <Box sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <IconsDropdown activeIcon={categoryIcon} onIconChange={(selectedIcon) => setCategoryIcon(selectedIcon)} />
               <TextField
+                sx={{ ml: 1 }}
                 defaultValue={category.name}
                 onChange={({ target }) => setUpdatedName(target.value)}
                 size="small"
@@ -81,7 +87,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
                 label="Category name"
                 variant="outlined"
               />
-              <Box sx={{ ml: 3, mt: 1 }}>
+              <Box sx={{ ml: 2 }}>
                 <input
                   type="color"
                   defaultValue={category.color}
@@ -115,7 +121,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
         <ListItemButton>
           <ListItemAvatar>
             <Avatar>
-              <AcUnitIcon sx={{ color: category.color }} />
+              <CategoryIcon iconType={categoryIcon} color={category.color} />
             </Avatar>
           </ListItemAvatar>
           <Box>

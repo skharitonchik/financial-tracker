@@ -111,7 +111,7 @@ export const Transactions: FC<TransactionsProps> = () => {
         </AccordionDetails>
       </Accordion>
 
-      <TransactionsFilter categoriesData={categoriesData ?? []} usersData={usersData ?? []} filteredMinus={filteredMinus} filteredPlus={filteredPlus} updateFilters={loadFilteredTransactions}/>
+      <TransactionsFilter categoriesData={categoriesData ?? []} usersData={usersData ?? []} filteredMinus={filteredMinus} filteredPlus={filteredPlus} updateFilters={loadFilteredTransactions} isNeedReload={isLoadTransactions}/>
       <TransactionTable transactions={transactions} />
     </>
   );

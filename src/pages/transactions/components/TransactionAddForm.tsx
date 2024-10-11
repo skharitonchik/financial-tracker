@@ -7,7 +7,9 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import Button from '@mui/material/Button';
 import { useCardsData, useCategoriesData, useTransactionAdd } from '../../../hooks';
 import dayjs, { Dayjs } from 'dayjs';
-import { RadioGroup, CommentsButtonsList } from '../../../components';
+import { CommentsButtonsList } from '../../../components';
+import { CategoriesDropdown } from './CategoriesDropdown';
+import { CardsDropdown } from './CardsDropdown';
 
 interface ITransactionCategory {
   id: string;
@@ -24,15 +26,11 @@ type TransactionAddFormProps = {
 
 export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionAdd, categoryType }) => {
   const [isLoadTransactions, setIsLoadTransactions] = useState(true);
-  const { cardsData, isLoadCardsSuccess } = useCardsData(isLoadTransactions);
-  const { categoriesData, isLoadCategoriesSuccess } = useCategoriesData(isLoadTransactions);
-  const { transactionsAddMutate, transactionsPostData } = useTransactionAdd();
+  const [isTransactionDisabled, setIsTransactionDisabled] = useState(false);
   const [transactionCard, setTransactionCard] = useState('');
   const [transactionCategoryID, setTransactionCategoryID] = useState('');
-  const [transactionDate, setTransactionDate] = useState<Dayjs | null>(dayjs(new Date()));
-  const transactionMoney = useRef<HTMLInputElement>(null);
   const [filteredCategories, setFilteredCategories] = useState<any[]>([]);
-  const transactionNotes = useRef<HTMLInputElement>(document.createElement('input'));
+  const [transactionDate, setTransactionDate] = useState<Dayjs | null>(dayjs(new Date()));
   const [transactionCategory, setTransactionCategory] = useState<ITransactionCategory>({
     id: '',
     name: '',
@@ -40,6 +38,24 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
     color: '',
     comments: [],
   });
+
+  const transactionMoney = useRef<HTMLInputElement>(null);
+  const transactionNotes = useRef<HTMLInputElement>(document.createElement('input'));
+
+  const { cardsData, isLoadCardsSuccess } = useCardsData(isLoadTransactions);
+  const { categoriesData, isLoadCategoriesSuccess } = useCategoriesData(isLoadTransactions);
+  const { transactionsAddMutate, transactionsPostData } = useTransactionAdd();
+
+  const checkIsTransactionAddDisabled = () => {
+    const moneyNum = parseFloat(transactionMoney?.current?.value as string);
+
+    setIsTransactionDisabled(
+      moneyNum === 0 ||
+      isNaN(moneyNum) ||
+      transactionCategoryID.trim().length === 0 ||
+      transactionCard.trim().length === 0
+    );
+  }
 
   const addTransaction = () => {
     transactionsAddMutate({
@@ -69,6 +85,10 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
   };
 
   useEffect(() => {
+    checkIsTransactionAddDisabled();
+  }, [transactionCategoryID, transactionCard]);
+
+  useEffect(() => {
     setTransactionCategory(filteredCategories.find((i) => i.id === transactionCategoryID));
   }, [transactionCategoryID]);
 
@@ -76,10 +96,18 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
     if (categoriesData && categoriesData.length > 0) {
       setFilteredCategories(categoriesData.filter((c) => c.type === categoryType));
     }
+
+    if (transactionMoney.current && transactionMoney.current.value) {
+      transactionMoney.current.value = '0';
+    }
+
+    setTransactionCategoryID('');
+    setTransactionCard('');
   }, [categoryType, categoriesData]);
 
   useEffect(() => {
     setIsLoadTransactions(true);
+    setIsTransactionDisabled(true);
 
     if (transactionMoney.current && transactionMoney.current.value) {
       transactionMoney.current.value = '0';
@@ -106,43 +134,39 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
             size="small"
             defaultValue={0}
             inputRef={transactionMoney}
+            onChange={checkIsTransactionAddDisabled}
             fullWidth
             type="number"
             label="Money spend"
             variant="outlined"
           />
 
+          <Divider sx={{ mt: 2 }} />
           <Box sx={{ mt: 2 }}>
-            {isLoadCategoriesSuccess
-              ? filteredCategories.map((c: any) => (
-                  <RadioGroup
-                    key={c.id}
-                    inline={true}
-                    value={c.id}
-                    activeItem={transactionCategoryID}
-                    activeItemChange={setTransactionCategoryID}
-                    label={c.name}
-                  />
-                ))
-              : ''}
+            {isLoadCategoriesSuccess ? (
+              <CategoriesDropdown
+                filteredCategories={filteredCategories}
+                activeItemValue={transactionCategoryID}
+                onChange={(selectedCategory) => setTransactionCategoryID(selectedCategory)}
+              />
+            ) : (
+              ''
+            )}
           </Box>
-          <Divider />
+          <Divider sx={{ mt: 2 }} />
           <Box sx={{ mt: 2 }}>
-            {isLoadCardsSuccess
-              ? cardsData.map((c: any) => (
-                  <RadioGroup
-                    key={c.id}
-                    inline={true}
-                    value={c.id}
-                    activeItem={transactionCard}
-                    activeItemChange={setTransactionCard}
-                    label={c.name}
-                    secondLabel={`${c.money} ${c.currency} ${c.user}`}
-                  />
-                ))
-              : ''}
+            {isLoadCardsSuccess ? (
+              <CardsDropdown
+                activeCard={transactionCard}
+                cards={cardsData}
+                onChange={(selectedCard) => setTransactionCard(selectedCard)}
+              />
+            ) : (
+              ''
+            )}
           </Box>
-          <Divider />
+
+          <Divider sx={{ mt: 2 }} />
           <Box sx={{ mt: 2 }}>
             {transactionCategory && transactionCategory.comments && transactionCategory.comments.length > 0 ? (
               <CommentsButtonsList list={transactionCategory.comments} onClickHandler={(c) => addCommentToNotes(c)} />
@@ -168,7 +192,7 @@ export const TransactionAddForm: FC<TransactionAddFormProps> = ({ onTransactionA
         </Grid>
       </Grid>
 
-      <Button sx={{ mt: 2 }} variant="outlined" onClick={addTransaction}>
+      <Button disabled={isTransactionDisabled} sx={{ mt: 2 }} variant="outlined" onClick={addTransaction}>
         Add Transaction
       </Button>
     </>
