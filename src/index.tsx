@@ -7,6 +7,14 @@ import theme from './theme';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
+import dayjs from "dayjs";
+import updateLocale from "dayjs/plugin/updateLocale";
+
+dayjs.extend(updateLocale);
+dayjs.updateLocale("en", {
+  weekStart: 1
+});
+
 const rootElement = document.getElementById('root');
 const root = ReactDOM.createRoot(rootElement!);
 

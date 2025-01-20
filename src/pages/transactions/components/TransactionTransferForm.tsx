@@ -2,13 +2,12 @@ import { FC, useEffect, useRef, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import Button from '@mui/material/Button';
 import dayjs, { Dayjs } from 'dayjs';
 import { useTransactionTransferAdd, useCardsData } from '../../../hooks';
-import { RadioGroup } from '../../../components';
+import { CardsDropdown } from './CardsDropdown';
 
 type TransactionTransferFormProps = {
   onTransactionTransfer: () => void;
@@ -16,21 +15,70 @@ type TransactionTransferFormProps = {
 
 export const TransactionTransferForm: FC<TransactionTransferFormProps> = ({ onTransactionTransfer }) => {
   const [isCardsDataLoaded, setIsCardsDataLoaded] = useState(true);
-  const { cardsData, isLoadCardsSuccess } = useCardsData(isCardsDataLoaded);
-  const [transactionDate, setTransactionDate] = useState<Dayjs | null>(dayjs(new Date()));
-  const transactionNotes = useRef<HTMLInputElement>(null);
-
-  const moneyFrom = useRef(0);
-  const moneyTo = useRef(0);
-
-  const { transactionTransferPostData, transactionTransferMutate } = useTransactionTransferAdd();
-
+  const [isTransferDisabled, setIsTransferDisabled] = useState(false);
   const [cardFrom, setCardFrom] = useState('');
   const [cardTo, setCardTo] = useState('');
+  const [transactionDate, setTransactionDate] = useState<Dayjs | null>(dayjs(new Date()));
+  //--------------------------
+  const transactionNotes = useRef<HTMLInputElement>(null);
+  const moneyFrom = useRef<HTMLInputElement>(null);
+  const moneyTo = useRef<HTMLInputElement>(null);
+  //--------------------------
+  const { transactionTransferPostData, transactionTransferMutate } = useTransactionTransferAdd();
+  const { cardsData, isLoadCardsSuccess } = useCardsData(isCardsDataLoaded);
+
+
+  const checkIsTransactionDisabled = () => {
+    const moneyFromNum = parseFloat(moneyFrom.current?.value as string);
+    const moneyToNum = parseFloat(moneyTo.current?.value as string);
+
+    setIsTransferDisabled(
+        moneyFromNum === 0 ||
+        moneyToNum === 0 ||
+        isNaN(moneyFromNum) ||
+        isNaN(moneyToNum) ||
+        cardTo.trim().length === 0 ||
+        cardFrom.trim().length === 0
+    );
+  };
+
+  const addTransaction = () => {
+    transactionTransferMutate({
+      requestData: {
+        from: {
+          date: transactionDate,
+          card: cardFrom,
+          category: 'transfer',
+          money: parseFloat(moneyFrom?.current?.value as string),
+          type: 20,
+          notes: transactionNotes?.current?.value,
+        },
+        to: {
+          date: transactionDate,
+          card: cardTo,
+          category: 'transfer',
+          money: parseFloat(moneyTo?.current?.value as string),
+          type: 21,
+          notes: transactionNotes?.current?.value,
+        },
+      },
+    });
+  };
 
   useEffect(() => {
-    moneyFrom.current = 0;
-    moneyTo.current = 0;
+    checkIsTransactionDisabled();
+  }, [cardFrom, cardTo]);
+
+  useEffect(() => {
+    setIsTransferDisabled(true);
+
+    if (moneyFrom.current && moneyFrom.current.value) {
+      moneyFrom.current.value = '0';
+    }
+
+    if (moneyTo.current && moneyTo.current.value) {
+      moneyTo.current.value = '0';
+    }
 
     if (transactionNotes.current && transactionNotes.current.value) {
       transactionNotes.current.value = '';
@@ -43,93 +91,66 @@ export const TransactionTransferForm: FC<TransactionTransferFormProps> = ({ onTr
     setIsCardsDataLoaded(false);
   }, [cardsData]);
 
-  const addTransaction = () => {
-    transactionTransferMutate({
-      requestData: {
-        from: {
-          date: transactionDate,
-          card: cardFrom,
-          category: 'transfer',
-          money: moneyFrom.current,
-          type: 20,
-          notes: transactionNotes?.current?.value,
-        },
-        to: {
-          date: transactionDate,
-          card: cardTo,
-          category: 'transfer',
-          money: moneyTo.current,
-          type: 21,
-          notes: transactionNotes?.current?.value,
-        },
-      },
-    });
-  };
-
   return (
     <>
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <TextField
             defaultValue={0}
+            inputRef={moneyFrom}
             size="small"
             fullWidth
             type="number"
-            onChange={(e) => (moneyFrom.current = parseFloat(e.target.value))}
+            onChange={checkIsTransactionDisabled}
             label="Money from:"
             variant="outlined"
           />
           <TextField
             sx={{ mt: 2 }}
             defaultValue={0}
+            inputRef={moneyTo}
             size="small"
             fullWidth
             type="number"
-            onChange={(e) => (moneyTo.current = parseFloat(e.target.value))}
+            onChange={checkIsTransactionDisabled}
             label="Money to:"
             variant="outlined"
           />
 
           <Grid container spacing={2}>
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <Box sx={{ mt: 2 }}>
-                <Typography>From card:</Typography>
-                {isLoadCardsSuccess
-                  ? cardsData.map((c: any) => (
-                      <RadioGroup
-                        key={c.id}
-                        value={c.id}
-                        isDisabled={c.id === cardTo}
-                        activeItem={cardFrom}
-                        activeItemChange={setCardFrom}
-                        label={c.name}
-                        secondLabel={`${c.money} ${c.currency} ${c.user}`}
-                      />
-                    ))
-                  : ''}
+                {isLoadCardsSuccess ? (
+                  <CardsDropdown
+                    label={'From card:'}
+                    cards={cardsData}
+                    onChange={(selectedCard) => setCardFrom(selectedCard)}
+                    activeCard={cardFrom}
+                    disabledId={cardTo}
+                  />
+                ) : (
+                  ''
+                )}
               </Box>
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <Box sx={{ mt: 2 }}>
-                <Typography>To card:</Typography>
-                {isLoadCardsSuccess
-                  ? cardsData.map((c: any) => (
-                      <RadioGroup
-                        key={c.id}
-                        value={c.id}
-                        isDisabled={c.id === cardFrom}
-                        activeItem={cardTo}
-                        activeItemChange={setCardTo}
-                        label={c.name}
-                        secondLabel={`${c.money} ${c.currency} ${c.user}`}
-                      />
-                    ))
-                  : ''}
+                {isLoadCardsSuccess ? (
+                  <CardsDropdown
+                    label={'To card:'}
+                    cards={cardsData}
+                    onChange={(selectedCard) => setCardTo(selectedCard)}
+                    activeCard={cardTo}
+                    disabledId={cardFrom}
+                  />
+                ) : (
+                  ''
+                )}
               </Box>
             </Grid>
           </Grid>
-          <Divider />
+          <Divider sx={{ mt: 2 }} />
           <TextField
             sx={{ mt: 2 }}
             defaultValue={''}
@@ -148,7 +169,7 @@ export const TransactionTransferForm: FC<TransactionTransferFormProps> = ({ onTr
         </Grid>
       </Grid>
 
-      <Button sx={{ mt: 2 }} variant="outlined" onClick={addTransaction}>
+      <Button disabled={isTransferDisabled} sx={{ mt: 2 }} variant="outlined" onClick={addTransaction}>
         Add Transaction
       </Button>
     </>

@@ -7,16 +7,13 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import Divider from '@mui/material/Divider';
+import Switch from '@mui/material/Switch';
 
 import { useCardAdd, useCardsData, useCurrenciesData, useUsersData } from '../../hooks';
 import { RadioGroup } from '../../components';
+
+import { CardInfo } from './components';
 
 type CardsProps = {};
 
@@ -115,35 +112,22 @@ export const Cards: FC<CardsProps> = () => {
           </Button>
         </AccordionDetails>
       </Accordion>
+      <Box sx={{ mt: 2 }}>
+        Show archived:
 
-      <TableContainer>
-        <Table sx={{ minWidth: 550, mt: 2 }} size="medium" aria-label="a dense table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Card/Account name</TableCell>
-              <TableCell>Card Money</TableCell>
-              <TableCell>Currency</TableCell>
-              <TableCell>User</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {isLoadCardsSuccess ? (
-              cardsData.map((c: any) => {
-                return (
-                  <TableRow key={c.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                    <TableCell>{c.name}</TableCell>
-                    <TableCell>{c.money}</TableCell>
-                    <TableCell>{c.currency}</TableCell>
-                    <TableCell>{c.user}</TableCell>
-                  </TableRow>
-                );
-              })
-            ) : (
-              <TableCell></TableCell>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+        {/*checked={checked}*/}
+        {/*onChange={handleChange}*/}
+        <Switch />
+      </Box>
+      <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+        {isLoadCardsSuccess ? (
+          cardsData.map((c: any, index: number) => (
+            <CardInfo key={index} cardName={c.name} money={c.money} currency={c.currency} user={c.user} />
+          ))
+        ) : (
+          <div></div>
+        )}
+      </Box>
     </>
   );
 };

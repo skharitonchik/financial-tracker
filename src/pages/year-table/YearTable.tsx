@@ -11,6 +11,19 @@ import { RadioGroup } from '../../components';
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
 
+
+const SX_STICKY_1 = {
+  backgroundColor: 'rgb(245 244 244)',
+  position: 'sticky',
+  left: 0
+}
+
+const SX_STICKY_2 = {
+  backgroundColor: 'white',
+  position: 'sticky',
+  left: 0
+}
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -32,12 +45,8 @@ export const YearTable: FC<YearTableProps> = () => {
   const [monthKeys, setMonthKeys] = useState<string[]>([]);
   const [totals, setTotals] = useState({});
 
-
-  const {
-    filteredByMonthTransactionsData,
-    isFilteredByMonthTransactionsSuccess,
-    filteredByMonthTransactionsMutate,
-  } = useFilteredByMonthTransactions();
+  const { filteredByMonthTransactionsData, isFilteredByMonthTransactionsSuccess, filteredByMonthTransactionsMutate } =
+    useFilteredByMonthTransactions();
 
   const { categoriesSettingsData, isCategoriesSettingsDataSuccess } = useCategoriesSettingsData();
 
@@ -57,10 +66,14 @@ export const YearTable: FC<YearTableProps> = () => {
         monthKeysArr.push(filteredByMonthTransactionsDataKey);
       }
 
-      monthKeysArr.sort((a, b) => a < b ? -1 : 1);
+      monthKeysArr.sort((a, b) => (a < b ? -1 : 1));
       setMonthKeys(monthKeysArr);
 
-      console.info('%c  SERGEY filteredByMonthTransactionsData[currentYear]', 'background: #222; color: #bada55', filteredByMonthTransactionsData[currentYear]);
+      console.info(
+        '%c  SERGEY filteredByMonthTransactionsData[currentYear]',
+        'background: #222; color: #bada55',
+        filteredByMonthTransactionsData[currentYear],
+      );
 
       const totals = {};
 
@@ -96,9 +109,7 @@ export const YearTable: FC<YearTableProps> = () => {
     filteredByMonthTransactionsMutate({ requestData: { year: '2024' } });
   }, []);
 
-
   useEffect(() => {
-
     console.group('yearsData');
 
     console.info('%c  SERGEY yearData', 'background: #222; color: #bada55', yearData);
@@ -119,65 +130,106 @@ export const YearTable: FC<YearTableProps> = () => {
         />
       ))}
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 550, mt: 2 }} size="medium" aria-label="a dense table">
+        <Table sx={{ minWidth: 550, mt: 2, borderCollapse: 'separate' }} size="medium" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell sx={{borderRight: '1px solid rgb(224, 224, 224)'}}>Category</TableCell>
-              {
-                isFilteredByMonthTransactionsSuccess ?
-                  monthKeys.map((monthNumber, index) => {
-                    return <TableCell key={index} sx={{borderRight: '1px solid rgb(224, 224, 224)'}}>{monthNumber}</TableCell>;
-                  }) : ''
-              }
+              <TableCell sx={{ borderRight: '1px solid rgb(224, 224, 224)', ...SX_STICKY_2 }}>Category</TableCell>
+              {isFilteredByMonthTransactionsSuccess
+                ? monthKeys.map((monthNumber, index) => {
+                    return (
+                      <TableCell key={index} sx={{ borderRight: '1px solid rgb(224, 224, 224)' }}>
+                        {monthNumber}
+                      </TableCell>
+                    );
+                  })
+                : ''}
               <TableCell>Total</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {
-              isCategoriesSettingsDataSuccess ? categoriesSettingsData.map((c, index) => {
-                return <TableRow key={`table-row-${index}`} sx={{backgroundColor: index % 2 === 0 ? 'rgb(245 244 244)' : ''}}>
+            {isCategoriesSettingsDataSuccess
+              ? categoriesSettingsData.map((c, index) => {
+                  const firstCellSx = index % 2 === 0 ? SX_STICKY_1 : SX_STICKY_2
 
-                  <TableCell sx={{ color: c.type === 1 ? '#008c7e' : '#FF4842', borderRight: '1px solid rgb(224, 224, 224)' }}>{c.name}</TableCell>
-                  {
-                    isFilteredByMonthTransactionsSuccess ?
-                      monthKeys.map((monthNumber, index) => {
-                        if (yearData[monthNumber][c.name] && yearData[monthNumber][c.name].currencies['PLN']) {
-                          const currency = yearData[monthNumber][c.name].currencies['PLN'];
+                  return (
+                    <TableRow
+                      key={`table-row-${index}`}
+                      sx={{ backgroundColor: index % 2 === 0 ? 'rgb(245 244 244)' : '' }}>
+                      <TableCell
+                        sx={{
+                          color: c.type === 1 ? '#008c7e' : '#FF4842',
+                          borderRight: '2px solid rgb(224, 224, 224)',
+                          ...firstCellSx
+                        }}>
+                        {c.name}
+                      </TableCell>
+                      {isFilteredByMonthTransactionsSuccess
+                        ? monthKeys.map((monthNumber, index) => {
+                            if (yearData[monthNumber][c.name] && yearData[monthNumber][c.name].currencies['PLN']) {
+                              const currency = yearData[monthNumber][c.name].currencies['PLN'];
 
-                          switch (c.type) {
-                            case 1:
-                              return <TableCell sx={{borderRight: '1px solid rgb(224, 224, 224)'}} key={index}>{currency.income.toFixed(2)}</TableCell>;
-                            case 0:
-                              return <TableCell sx={{borderRight: '1px solid rgb(224, 224, 224)'}} key={index}>{currency.expense.toFixed(2)}</TableCell>;
-                            default:
-                              return <TableCell sx={{borderRight: '1px solid rgb(224, 224, 224)'}} key={index}></TableCell>;
-                          }
-                        }
+                              switch (c.type) {
+                                case 1:
+                                  return (
+                                    <TableCell sx={{ borderRight: '1px solid rgb(224, 224, 224)' }} key={index}>
+                                      {currency.income.toFixed(2)}
+                                    </TableCell>
+                                  );
+                                case 0:
+                                  return (
+                                    <TableCell sx={{ borderRight: '1px solid rgb(224, 224, 224)' }} key={index}>
+                                      {currency.expense.toFixed(2)}
+                                    </TableCell>
+                                  );
+                                default:
+                                  return (
+                                    <TableCell
+                                      sx={{ borderRight: '1px solid rgb(224, 224, 224)' }}
+                                      key={index}></TableCell>
+                                  );
+                              }
+                            }
 
-                        return <StyledTableCell sx={{borderRight: '1px solid rgb(224, 224, 224)'}} key={index}></StyledTableCell>;
-                      }) : ''
-                  }
-                  {
-                    totals[c.name] ? <TableCell
-                        sx={{ fontWeight: 'bold' }}>{c.type === 1 ? totals[c.name].income.toFixed(2) : totals[c.name].expense.toFixed(2)}</TableCell> :
-                      <TableCell></TableCell>
-                  }
-                </TableRow>;
-              }) : ''
-            }
-            {
-              isFilteredByMonthTransactionsSuccess ? <TableRow>
-                <TableCell sx={{borderRight: '1px solid rgb(224, 224, 224)'}}></TableCell>
+                            return (
+                              <StyledTableCell
+                                sx={{ borderRight: '1px solid rgb(224, 224, 224)' }}
+                                key={index}></StyledTableCell>
+                            );
+                          })
+                        : ''}
+                      {totals[c.name] ? (
+                        <TableCell sx={{ fontWeight: 'bold' }}>
+                          {c.type === 1 ? totals[c.name].income.toFixed(2) : totals[c.name].expense.toFixed(2)}
+                        </TableCell>
+                      ) : (
+                        <TableCell></TableCell>
+                      )}
+                    </TableRow>
+                  );
+                })
+              : ''}
+            {isFilteredByMonthTransactionsSuccess ? (
+              <TableRow>
+                <TableCell sx={{ borderRight: '1px solid rgb(224, 224, 224)', ...SX_STICKY_2 }}></TableCell>
                 {monthKeys.map((monthNumber) => {
                   if (totals[monthNumber]) {
-                    return <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgb(224, 224, 224)' }}>{totals[monthNumber].expense.toFixed(2)}</TableCell>;
+                    return (
+                      <TableCell
+                        sx={{
+                          fontWeight: 'bold',
+                          borderRight: '1px solid rgb(224, 224, 224)',
+                        }}>
+                        {totals[monthNumber].expense.toFixed(2)}
+                      </TableCell>
+                    );
                   }
 
-                  return <TableCell sx={{borderRight: '1px solid rgb(224, 224, 224)'}}></TableCell>;
+                  return <TableCell sx={{ borderRight: '1px solid rgb(224, 224, 224)' }}></TableCell>;
                 })}
-              </TableRow> : <TableRow></TableRow>
-            }
-
+              </TableRow>
+            ) : (
+              <TableRow></TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
