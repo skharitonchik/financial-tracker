@@ -74,7 +74,16 @@ function a11yProps(index: number) {
 }
 
 export default function App() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        networkMode: 'always'
+      },
+      mutations: {
+        networkMode: 'always'
+      }
+    }
+  });
 
   const [value, setValue] = useState(0);
 
