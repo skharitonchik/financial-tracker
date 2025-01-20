@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import Switch from '@mui/material/Switch';
 
 import { useCardAdd, useCardsData, useCurrenciesData, useUsersData } from '../../hooks';
 import { RadioGroup } from '../../components';
@@ -111,7 +112,13 @@ export const Cards: FC<CardsProps> = () => {
           </Button>
         </AccordionDetails>
       </Accordion>
+      <Box sx={{ mt: 2 }}>
+        Show archived:
 
+        {/*checked={checked}*/}
+        {/*onChange={handleChange}*/}
+        <Switch />
+      </Box>
       <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
         {isLoadCardsSuccess ? (
           cardsData.map((c: any, index: number) => (
