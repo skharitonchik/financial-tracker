@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import { TransactionSummary } from './TransactionSummary';
+import { getColorByType } from '../../../utils';
 
 interface ITransaction {
   id: string;
@@ -89,10 +90,10 @@ export const TransactionTable: FC<TransactionsProps> = ({ transactions }) => {
 
                         return (
                           <TableRow key={id}>
-                            <TableCell sx={{ color: type === 0 ? '#FF4842' : '' || type === 1 ? '#008c7e' : '' }}>
+                            <TableCell sx={{ color: getColorByType(type) }}>
                               {category}
                             </TableCell>
-                            <TableCell sx={{ color: type === 0 ? '#FF4842' : '' || type === 1 ? '#008c7e' : '' }}>
+                            <TableCell sx={{ color: getColorByType(type) }}>
                               {money}
                             </TableCell>
                             <TableCell>{card.currency}</TableCell>

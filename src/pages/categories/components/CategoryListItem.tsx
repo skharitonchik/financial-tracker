@@ -14,6 +14,7 @@ import { useCategoryEdit } from '../../../hooks';
 import { IconsDropdown, CategoryIcon } from '../../../components';
 import { CommentsForm } from './CommentsForm';
 import { CommentsList } from './CommentsList';
+import { getColorByType } from '../../../utils';
 
 type CategoryListItemProps = {
   category: {
@@ -126,7 +127,7 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category, onCatego
           </ListItemAvatar>
           <Box>
             <ListItemText
-              sx={{ color: category.type === 0 ? '#FF4842' : '' || category.type === 1 ? '#008c7e' : '', margin: 0 }}
+              sx={{ color: getColorByType(category.type), margin: 0 }}
               primary={category.name}
               secondary={parseCategoryType(category.type)}
             />
